@@ -1,0 +1,159 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'auctions/listing.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+{# <h2>Active Listings</h2> #}
+<div class="message-container">
+  {% if messages %}
+  {% for message in messages %}
+  <center>
+    <div class="message">
+      <span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
+    </div>
+  </center>
+  {% endfor %}
+  {% endif %}
+</div>
+{% if close %}
+<div class="close-button-container">
+  <div>
+    {% if user.is_authenticated %}
+    <div>
+      <form action="{% url 'auctions:closeListing' list.id %} " method="post">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        <input class="btn btn-danger" type="submit" value="Close Auction" />
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<div class="app-container">
+  <div class="heading-container">
+    <div class="title-container">
+      <strong>
+        {{ list.title | capfirst }}
+      </strong>
+    </div>
+    <div class="category-container">
+      <div>
+        {% if list.category %}
+        Category: {{ list.category }}
+        {% else %}
+        Category: None
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="watchlist-container">
+    <div class="watchlist-button-container">
+
+      {% if user.is_authenticated %}
+      <div>
+        {% if watchlist %}
+        <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:Watchlist' %}">
+          <input type="hidden" name="list_id" value="{{ list.id }}" />
+          {% csrf_token %}
+          <input class="btn btn-secondary" type="submit" value="Remove from watchlist" />
+        </form>
+        {% else %}
+        <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:Watchlist' %}">
+          <input type="hidden" name="list_id" value="{{ list.id }}" />
+          {% csrf_token %}
+          <input class="btn btn-secondary" type="submit" value="Add to watchlist" />
+        </form>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="starting-price-container">
+    <div class="starting-price">
+      Starting Price: ${{ list.starting_bid }}
+    </div>
+  </div>
+  <div class="current-price-container">
+    <div class="current-price">
+      <span>
+        Current Price:
+        {% if list.current_bid %}
+        {{ list.current_bid }}
+        {% else %}
+        ${{ list.starting_bid }}
+        {% endif %}
+      </span>
+    </div>
+  </div>
+  <div class="bid-price-container">
+    <div class="bid-price">
+      {% if list.active %}
+      {% if user.is_authenticated %}
+      <form class="bid-form" action="{% url 'auctions:bid' %} " method="post">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        <input type="hidden" name="list_id" value="{{ list.id }}">
+        {{ bid_form }}
+        <div class="bid-button-container">
+          <input class="btn btn-danger" type="submit" value="Bid" />
+        </div>
+      </form>
+      {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  <div class="app-body-container">
+    <div class="body-container">
+      <div class="photo-container">
+        <img class="img" src="{{ list.image_url }}" alt="{{ list.title }}">
+      </div>
+      <div class="description-main-container">
+        <div class="description-container">
+          <div class="description">
+            {{ list.description }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comments-container">
+      <div class="comment-heading-container">
+        <div class="comment-body-container">
+          {% for comment in comments %}
+          <ul class="comment-ul-container">
+            <div class="comment-user-date-container">
+              <li>{{ comment.user.username }}</li>
+              <li class="comment-date">({{ comment.date }})</li>
+            </div>
+            <li class="comment">{{ comment.data }}</li>
+          </ul>
+          {% endfor %}
+        </div>
+      </div>
+      {% if user.is_authenticated %}
+      {% if commentForm %}
+      <div class="new-comment-container">
+        <form name="comment" method="post" action="{% url 'auctions:addComment' %}">
+          <input type="hidden" name="list_id" value="{{ list.id }}" />
+          {% csrf_token %}
+          {{ commentForm.as_p }}
+          <div class="add-comment-container">
+            <div class="add-comment-button-container">
+              <input type="submit" value="Add comment">
+            </div>
+          </div>
+        </form>
+      </div>
+      {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
