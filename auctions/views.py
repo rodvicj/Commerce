@@ -91,19 +91,19 @@ def register(request):
 
 
 @login_required(login_url="auctions:login")
-def createNewList(request):
+def new_list(request):
     if request.method == "POST":
         user = User.objects.get(pk=request.user.id)
         list_form = ListForm(request.POST)
         category_form = CategoryForm(request.POST)
-        newList = Listing()
+        list = Listing()
 
         if list_form.is_valid():
-            newList.title = list_form.cleaned_data["title"]
-            newList.description = list_form.cleaned_data["description"]
-            newList.image_url = list_form.cleaned_data["image_url"]
-            newList.starting_bid = list_form.cleaned_data["starting_bid"]
-            newList.user = user
+            list.title = list_form.cleaned_data["title"]
+            list.description = list_form.cleaned_data["description"]
+            list.image_url = list_form.cleaned_data["image_url"]
+            list.starting_bid = list_form.cleaned_data["starting_bid"]
+            list.user = user
             # newList.category = newCategory
 
             if category_form.is_valid():
@@ -115,24 +115,24 @@ def createNewList(request):
 
                     for existing_category in Category.objects.all():
                         if existing_category.categoryName == category:
-                            newList.category = existing_category
+                            list.category = existing_category
                             existing = True
 
                     if not existing:
                         # new_category.categoryName = category
                         new_category = Category.objects.create(categoryName=category)
                         # new_category.save()
-                        newList.category = new_category
+                        list.category = new_category
 
-                newList.save()
+                list.save()
 
                 return HttpResponseRedirect(
-                    reverse("auctions:listing", args=(newList.id,))
+                    reverse("auctions:listing", args=(list.id,))
                 )
     else:
         return render(
             request,
-            "auctions/createNewList.html",
+            "auctions/new_list.html",
             {"list_form": ListForm(), "category_form": CategoryForm()},
         )
 
@@ -171,7 +171,7 @@ def listing(request, list_id):
 
 
 @login_required(login_url="auctions:login")
-def Watchlist(request):
+def watchlist(request):
     if request.method == "POST":
         user = User.objects.get(id=request.user.id)
         list_id = int(request.POST["list_id"])

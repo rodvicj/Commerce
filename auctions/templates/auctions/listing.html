@@ -59,13 +59,13 @@
       {% if user.is_authenticated %}
       <div>
         {% if watchlist %}
-        <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:Watchlist' %}">
+        <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:watchlist' %}">
           <input type="hidden" name="list_id" value="{{ list.id }}" />
           {% csrf_token %}
           <input class="btn btn-secondary" type="submit" value="Remove from watchlist" />
         </form>
         {% else %}
-        <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:Watchlist' %}">
+        <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:watchlist' %}">
           <input type="hidden" name="list_id" value="{{ list.id }}" />
           {% csrf_token %}
           <input class="btn btn-secondary" type="submit" value="Add to watchlist" />
