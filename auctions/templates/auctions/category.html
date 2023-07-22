@@ -6,19 +6,23 @@
 {% endblock %}
 
 {% block body %}
-<center><hr><h1>Categories</h1><hr><br></center>
+<center>
+  <hr>
+  <h1>Categories</h1>
+  <hr><br>
+</center>
 <div class="category-container">
   <div class="category-body-container">
     {% for list in lists %}
-      <div>
-        <ul>
-          <li><a href="{% url 'auctions:viewCategoryName' list.categoryName %}" class="listing_link"> {{ list.categoryName }}</a></li>
-        </ul>
-      </div>
+    <div>
+      <ul>
+        <li><a href="{% url 'auctions:viewCategoryName' list.categoryName %}" class="listing_link"> {{ list.categoryName
+            }}</a></li>
+      </ul>
+    </div>
     {% empty %}
-      <h6>currently no listings available</h6>
+    <h6>currently no listings available</h6>
     {% endfor %}
   </div>
 </div>
 {% endblock %}
-

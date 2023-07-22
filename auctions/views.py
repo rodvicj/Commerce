@@ -170,6 +170,7 @@ def listing(request, list_id):
         )
 
 
+# NOTE: refactor to only do one thing, add another function for adding watchlist and another one for removing from watchlist
 @login_required(login_url="auctions:login")
 def watchlist(request):
     if request.method == "POST":
@@ -186,6 +187,48 @@ def watchlist(request):
         list.save()
 
         return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
+
+# NOTE: add_watchlist
+@login_required(login_url="auctions:login")
+def add_watchlist(request):
+    if request.method == "POST":
+        user = User.objects.get(id=request.user.id)
+        id = int(request.POST["list_id"])
+        list = Listing.objects.get(pk=id)
+        # watchlists = user.watchlists.all()
+
+        list.watchlist.add(user)
+
+        # if list in watchlists:
+        #     list.watchlist.remove(user)
+        # else:
+        #     list.watchlist.add(user)
+
+        list.save()
+
+        return HttpResponseRedirect(reverse("auctions:listing", args=(id,)))
+
+
+
+# NOTE: remove_watchlist
+@login_required(login_url="auctions:login")
+def remove_watchlist(request):
+    if request.method == "POST":
+        user = User.objects.get(id=request.user.id)
+        id = int(request.POST["list_id"])
+        list = Listing.objects.get(pk=id)
+        # watchlists = user.watchlists.all()
+
+        list.watchlist.remove(user)
+
+        # if list in watchlists:
+        #     list.watchlist.remove(user)
+        # else:
+        #     list.watchlist.add(user)
+
+        list.save()
+
+        return HttpResponseRedirect(reverse("auctions:listing", args=(id,)))
 
 
 @login_required(login_url="auctions:login")
