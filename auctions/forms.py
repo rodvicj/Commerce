@@ -38,12 +38,12 @@ class ListForm(forms.ModelForm):
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ['category_name']
-        labels = {'category_name': _('Category (e.g. Fashion, Toys, Electronics, Home, etc.)')}
+        fields = ['name']
+        labels = {'name': _('Category (e.g. Fashion, Toys, Electronics, Home, etc.)')}
 
         widgets = {
             # 'category': forms.Select(attrs={'class': 'form-control'}),
-            'category_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 

@@ -291,16 +291,17 @@ def add_comment(request):
 
 
 @login_required(login_url="auctions:login")
-def viewWatchlist(request):
+def view_watchlist(request):
     user = User.objects.get(id=request.user.id)
     watchlists = user.watchlists.all()
 
+    # TODO: create watchlist.html instead of using the index.html to accomodate multiple views
     return render(
         request, "auctions/index.html", {"lists": watchlists, "heading": "Watchlists"}
     )
 
 
-def viewCategory(request):
+def view_category(request):
     categories = Category.objects.all()
 
     return render(
@@ -310,13 +311,13 @@ def viewCategory(request):
     )
 
 # categories or category_names
-def view_by_category_name(request, name):
-    name = str(name)
-    category = Category.objects.get(category_name=name)
+def view_by_category_name(request, category_name):
+    category_name = str(category_name)
+    category = Category.objects.get(name=category_name)
     lists = Listing.objects.filter(category=category, active=True)
 
     return render(
-        request, "auctions/index.html", {"lists": lists, "heading": name}
+        request, "auctions/index.html", {"lists": lists, "heading": category_name}
     )
 
 
