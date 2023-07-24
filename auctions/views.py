@@ -107,20 +107,20 @@ def new_list(request):
             # newList.category = newCategory
 
             if category_form.is_valid():
-                category = category_form.cleaned_data["categoryName"]
+                category = category_form.cleaned_data["category_name"]
 
                 if len(category) != 0:
                     # new_category = Category()
                     existing = False
 
                     for existing_category in Category.objects.all():
-                        if existing_category.categoryName == category:
+                        if existing_category.category_name == category:
                             list.category = existing_category
                             existing = True
 
                     if not existing:
-                        # new_category.categoryName = category
-                        new_category = Category.objects.create(categoryName=category)
+                        # new_category.category_name = category
+                        new_category = Category.objects.create(category_name=category)
                         # new_category.save()
                         list.category = new_category
 
@@ -217,14 +217,15 @@ def remove_watchlist(request):
         user = User.objects.get(id=request.user.id)
         id = int(request.POST["list_id"])
         list = Listing.objects.get(pk=id)
-        # watchlists = user.watchlists.all()
+        watchlists = user.watchlists.all()
 
-        list.watchlist.remove(user)
+        # list.watchlist.remove(user)
 
-        # if list in watchlists:
-        #     list.watchlist.remove(user)
+        if list in watchlists:
+            list.watchlist.remove(user)
         # else:
-        #     list.watchlist.add(user)
+            # return error that the watchlist is already in your watchlists
+            # list.watchlist.add(user)
 
         list.save()
 
@@ -274,7 +275,7 @@ def bid(request):
 
 
 @login_required(login_url="auctions:login")
-def addComment(request):
+def add_comment(request):
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
         list_id = int(request.POST["list_id"])
@@ -308,19 +309,19 @@ def viewCategory(request):
         {"lists": categories},
     )
 
-
-def viewCategoryName(request, categoryName):
-    category_name = str(categoryName)
-    category = Category.objects.get(categoryName=category_name)
+# categories or category_names
+def view_by_category_name(request, name):
+    name = str(name)
+    category = Category.objects.get(category_name=name)
     lists = Listing.objects.filter(category=category, active=True)
 
     return render(
-        request, "auctions/index.html", {"lists": lists, "heading": category_name}
+        request, "auctions/index.html", {"lists": lists, "heading": name}
     )
 
 
 @login_required(login_url="auctions:login")
-def closeListing(request, list_id):
+def close_listing(request, list_id):
     if request.method == "POST":
         list = Listing.objects.get(pk=list_id)
         if list.active:

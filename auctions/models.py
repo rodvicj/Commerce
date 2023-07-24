@@ -17,10 +17,10 @@ class Bid(models.Model):
 
 
 class Category(models.Model):
-    categoryName = models.CharField(blank=True, max_length=32)
+    category_name = models.CharField(blank=True, max_length=32)
 
     def __str__(self):
-        return f"{self.categoryName}"
+        return f"{self.category_name}"
 
 
 class Listing(models.Model):

@@ -24,7 +24,7 @@
   <div>
     {% if user.is_authenticated %}
     <div>
-      <form action="{% url 'auctions:closeListing' list.id %} " method="post">
+      <form action="{% url 'auctions:close_listing' list.id %} " method="post">
         {% csrf_token %}
         <input type="hidden" name="user_id" value="{{ user.id }}">
         <input class="btn btn-danger" type="submit" value="Close Auction" />
@@ -140,7 +140,7 @@
       {% if user.is_authenticated %}
       {% if commentForm %}
       <div class="new-comment-container">
-        <form name="comment" method="post" action="{% url 'auctions:addComment' %}">
+        <form name="comment" method="post" action="{% url 'auctions:add_comment' %}">
           <input type="hidden" name="list_id" value="{{ list.id }}" />
           {% csrf_token %}
           {{ commentForm.as_p }}

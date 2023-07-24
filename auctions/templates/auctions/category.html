@@ -16,8 +16,9 @@
     {% for list in lists %}
     <div>
       <ul>
-        <li><a href="{% url 'auctions:viewCategoryName' list.categoryName %}" class="listing_link"> {{ list.categoryName
-            }}</a></li>
+        <li>
+          <a href="{% url 'auctions:view_by_category_name' list.category_name %}" class="listing_link"> {{ list.category_name }}</a>
+        </li>
       </ul>
     </div>
     {% empty %}
