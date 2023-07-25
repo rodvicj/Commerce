@@ -263,8 +263,8 @@ def view_watchlist(request):
     user = User.objects.get(id=request.user.id)
     watchlists = user.watchlists.all()
 
-    # TODO: create watchlist.html instead of using the index.html to accomodate multiple views
     return render(
+        # TODO: create seperate html file for view_watchlist
         request, "auctions/index.html", {"lists": watchlists, "heading": "Watchlists"}
     )
 
@@ -285,6 +285,7 @@ def view_by_category_name(request, category_name):
     lists = Listing.objects.filter(category=category, active=True)
 
     return render(
+        # TODO: create seperate html file for view_by_category_name
         request, "auctions/index.html", {"lists": lists, "heading": category_name}
     )
 
