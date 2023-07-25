@@ -10,6 +10,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("create", views.new_list, name="new_list"),
     path("listing/<int:list_id>", views.listing, name="listing"),
+    # TODO: change addremoveWatchlist to add_watchlist and remove_watchlist
     path("addremoveWatchlist", views.watchlist, name="watchlist"),
     path("add_watchlist", views.add_watchlist, name="add_watchlist"),
     path("remove_watchlist", views.remove_watchlist, name="remove_watchlist"),
