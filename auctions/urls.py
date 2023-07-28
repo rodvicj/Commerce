@@ -17,5 +17,7 @@ urlpatterns = [
     path("watchlist", views.view_watchlist, name="view_watchlist"),
     path("category", views.view_category, name="view_category"),
     path("category/<str:category_name>", views.view_by_category_name, name="view_by_category_name"),
-    path("close_listing/<int:list_id>", views.close_listing, name="close_listing")
+    path("close_listing/<int:list_id>", views.close_listing, name="close_listing"),
+    # TODO: add url for user's product page, after finishing also add capabilities to view active products and inactive products
+    path("products", views.display_products, name="display_products")
 ]

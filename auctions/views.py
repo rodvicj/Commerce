@@ -106,20 +106,20 @@ def new_list(request):
             # newList.category = newCategory
 
             if category_form.is_valid():
-                category = category_form.cleaned_data["category_name"]
+                category = category_form.cleaned_data["name"]
 
                 if len(category) != 0:
                     # new_category = Category()
                     existing = False
 
                     for existing_category in Category.objects.all():
-                        if existing_category.category_name == category:
+                        if existing_category.name.lower() == category.lower():
                             list.category = existing_category
                             existing = True
 
                     if not existing:
-                        # new_category.category_name = category
-                        new_category = Category.objects.create(category_name=category)
+                        # new_category.name = category
+                        new_category = Category.objects.create(name=category)
                         # new_category.save()
                         list.category = new_category
 
@@ -299,3 +299,17 @@ def close_listing(request, list_id):
             list.save()
 
         return HttpResponseRedirect(reverse("auctions:index"))
+
+@login_required(login_url="auctions:login")
+def display_products(request):
+    # products = Listing.objects.exclude(active=False).all()
+    products = Listing.objects.filter(user=request.user).all()
+
+    return render(
+        request,
+        "auctions/index.html",
+        {
+            "lists": products,
+        },
+    )
+    

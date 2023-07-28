@@ -11,28 +11,31 @@ A commerce web application with features like:
 Watchlist: which should display all of the listings that a user has added to their watchlist.
 Categories: Users should be able to visit a page that displays a list of all listing categories.
 
-## Requirements
+## What's contained in each file you created
 
-* install packages that are inside requirements.txt
-* How to run your application
-* Packages that need t obe installed should be in requirements.txt
+```
+$PROJECT_ROOT
+│   # auctions application files
+├── auctions
+│   # django projects files
+├── commerce
+│   # dependencies (python packages)
+└── requirements.txt
+```
 
-## What's contained in each file you created.
-
-* folder structure
 
 ## Installation
 
 
 ## Usage
 
-run `python manage.py runserver`
+* install packages by running `pip: -r requirements.txt`
+* run `python manage.py runserver` to start the server
 
 
 ## TODO
 
-* add this category
-(e.g. Fashion, Toys, Electronics, Home, etc.).
+* add (Fashion, Toys, Electronics, Home, etc.) to category
 
 ## About
 
