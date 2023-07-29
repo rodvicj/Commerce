@@ -1,0 +1,49 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<center>
+  <hr>
+  {% if heading %}
+  <h1>{{ heading }}</h1>
+  {% else %}
+  <h1>Active Listings</h1>
+  {% endif %}
+  <hr>
+</center>
+<br>
+<div class="app-container">
+  <div class="flex-container">
+    {% for list in lists %}
+    <a class="hyperlink" href="{% url 'auctions:listing' list.id %}">
+      <div class="flex-items">
+        <div class="item-heading">
+          <div id="title">{{ list.title }}</div>
+          <div class="bid">
+            {% if list.current_bid %}
+            <span class="bid-color">{{ list.current_bid }}</span>
+            {% else %}
+            <span class="bid-color">${{ list.starting_bid }}</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="item-body">
+          <div>
+            <div class="img-container"><img src="{{ list.image_url }}" alt="{{ list.title }}"></div>
+          </div>
+        </div>
+        <div class="item-footer">
+          <div><span>{{ list.description }}</span></div>
+        </div>
+      </div>
+
+    </a>
+    {% empty %}
+    <h3>There's no active listing</h3>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}
