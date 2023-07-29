@@ -307,9 +307,57 @@ def display_products(request):
 
     return render(
         request,
-        "auctions/index.html",
+        "auctions/products.html",
         {
             "lists": products,
         },
     )
     
+
+# @login_required(login_url="auctions:login")
+# def display_item_info(request):
+#     # products = Listing.objects.exclude(active=False).all()
+#     products = Listing.objects.filter(user=request.user).all()
+
+#     return render(
+#         request,
+#         "auctions/products.html",
+#         {
+#             "lists": products,
+#         },
+#     )
+#     
+
+@login_required(login_url="auctions:login")
+def product_info(request, list_id):
+    if request.user.id:
+        users = User.objects.all()
+        user = User.objects.get(id=request.user.id)
+
+        if user in users:
+            list = Listing.objects.get(pk=list_id)
+
+            if list.current_bid:
+                if not list.active and list.current_bid.user == user:
+                    messages.info(request, "You've won the auction!")
+
+            context = {
+                "list": list,
+                "watchlist": list in user.watchlists.all(),
+                "comments": list.comments.all().order_by("-date"),
+                "commentForm": CommentForm(),
+            }
+
+            if list.active:
+                context["bid_form"] = BidForm()
+                context["close"] = True if list.user == user else False
+
+            return render(request, "auctions/listing.html", context)
+    else:
+        list = Listing.objects.get(pk=list_id)
+        return render(
+            request,
+            "auctions/product_info.html",
+            {"list": list, "comments": list.comments.all().order_by("-date")},
+        )
+

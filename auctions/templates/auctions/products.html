@@ -6,19 +6,22 @@
 
 <center>
   <hr>
-  {% if heading %}
-  <h1>{{ heading }}</h1>
-  {% else %}
-  <h1>Active Listings</h1>
-  {% endif %}
+  <h1>Products</h1>
   <hr>
 </center>
 <br>
-<div class="app-container">
-  <div class="flex-container">
+<div class="container">
+  <div class="row">
     {% for list in lists %}
-    <a class="hyperlink" href="{% url 'auctions:listing' list.id %}">
-      <div class="flex-items">
+    <a class="col text-secondary text-decoration-none hover-shadow" href="{% url 'auctions:product_info' list.id %}">
+      <div class="item-body">
+        <div>
+          <div class="img-container"><img src="{{ list.image_url }}" alt="{{ list.title }}"></div>
+        </div>
+      </div>
+
+      <div class="border light-subtle">
+
         <div class="item-heading">
           <div id="title">{{ list.title }}</div>
           <div class="bid">
@@ -29,16 +32,11 @@
             {% endif %}
           </div>
         </div>
-        <div class="item-body">
-          <div>
-            <div class="img-container"><img src="{{ list.image_url }}" alt="{{ list.title }}"></div>
-          </div>
-        </div>
+
         <div class="item-footer">
-          <div><span>{{ list.description }}</span></div>
+          <div><span">{{ list.description | slice:":80" }}...</span></div>
         </div>
       </div>
-
     </a>
     {% empty %}
     <h3>There's no active listing</h3>
