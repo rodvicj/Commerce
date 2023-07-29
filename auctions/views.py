@@ -14,7 +14,7 @@ from .models import User, Listing, Bid, Comment, Category
 
 
 def index(request):
-    lists = Listing.objects.exclude(active=False).all()
+    lists = Listing.objects.all()
 
     return render(
         request,
