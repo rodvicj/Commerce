@@ -8,13 +8,13 @@ class User(AbstractUser):
     pass
 
 
-class Bid(models.Model):
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")
-    amount = models.PositiveIntegerField(blank=False, null=True)
+# class Bid(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")
+#     amount = models.PositiveIntegerField(blank=False, null=True)
 
-    def __str__(self):
-        return f"${self.amount}"
+#     def __str__(self):
+#         return f"${self.amount}"
 
 
 class Category(models.Model):
@@ -27,8 +27,8 @@ class Category(models.Model):
 class Listing(models.Model):
     user = models.ForeignKey(User, blank=False, on_delete=models.CASCADE, related_name="lists")
     title = models.CharField(blank=False, max_length=128)
-    starting_bid = models.PositiveIntegerField(blank=False)
-    current_bid = models.ForeignKey(Bid, null=True, blank=True, on_delete=models.CASCADE, related_name="item_list")
+    amount = models.PositiveIntegerField(blank=False)
+    # current_bid = models.ForeignKey(Bid, null=True, blank=True, on_delete=models.CASCADE, related_name="item_list")
     active = models.BooleanField(default=True)
     description = models.CharField(blank=False, max_length=512)
     image_url = models.URLField(blank=True)

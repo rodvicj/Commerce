@@ -13,10 +13,11 @@
 </head>
 
 <body>
-  <h1>Auctions</h1>
+  <h1>Commerce</h1>
   <div>
     {% if user.is_authenticated %}
     Signed in as <strong>{{ user.username }}</strong>.
+    <a href="{% url 'auctions:logout' %}">Log Out</a>
     {% else %}
     Not signed in.
     {% endif %}
@@ -25,22 +26,19 @@
     <ul class="nav">
       {% if user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:index' %}">Active Listings</a>
+        <a class="nav-link" href="{% url 'auctions:index' %}">All products</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:display_products' %}">Products</a>
+        <a class="nav-link" href="{% url 'auctions:display_products' %}">Your products</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:new_list' %}">Create Listings</a>
+        <a class="nav-link" href="{% url 'auctions:new_list' %}">Add product</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'auctions:view_watchlist' %}">Watchlists</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'auctions:view_category' %}">Categories</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:logout' %}">Log Out</a>
       </li>
       {% else %}
       <li class="nav-item">

@@ -77,7 +77,7 @@
   </div>
   <div class="starting-price-container">
     <div class="starting-price">
-      Starting Price: ${{ list.starting_bid }}
+      Starting Price: ${{ list.amount }}
     </div>
   </div>
   <div class="current-price-container">
@@ -87,7 +87,7 @@
         {% if list.current_bid %}
         {{ list.current_bid }}
         {% else %}
-        ${{ list.starting_bid }}
+        ${{ list.amount }}
         {% endif %}
       </span>
     </div>

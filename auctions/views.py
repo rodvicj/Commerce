@@ -9,8 +9,8 @@ from django.contrib import messages
 # from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from .forms import ListForm, BidForm, CommentForm, CategoryForm
-from .models import User, Listing, Bid, Comment, Category
+from .forms import ListForm, CommentForm, CategoryForm
+from .models import User, Listing, Comment, Category
 
 
 def index(request):
@@ -18,7 +18,7 @@ def index(request):
 
     return render(
         request,
-        "auctions/index.html",
+        "auctions/products.html",
         {
             "lists": lists,
         },
@@ -101,7 +101,7 @@ def new_list(request):
             list.title = list_form.cleaned_data["title"]
             list.description = list_form.cleaned_data["description"]
             list.image_url = list_form.cleaned_data["image_url"]
-            list.starting_bid = list_form.cleaned_data["starting_bid"]
+            list.amount = list_form.cleaned_data["amount"]
             list.user = user
             # newList.category = newCategory
 
@@ -144,9 +144,9 @@ def listing(request, list_id):
         if user in users:
             list = Listing.objects.get(pk=list_id)
 
-            if list.current_bid:
-                if not list.active and list.current_bid.user == user:
-                    messages.info(request, "You've won the auction!")
+            # if list.current_bid:
+            #     if not list.active and list.current_bid.user == user:
+            #         messages.info(request, "You've won the auction!")
 
             context = {
                 "list": list,
@@ -155,9 +155,9 @@ def listing(request, list_id):
                 "commentForm": CommentForm(),
             }
 
-            if list.active:
-                context["bid_form"] = BidForm()
-                context["close"] = True if list.user == user else False
+            # if list.active:
+                # context["bid_form"] = BidForm()
+                # context["close"] = True if list.user == user else False
 
             return render(request, "auctions/listing.html", context)
     else:
@@ -200,46 +200,46 @@ def remove_watchlist(request):
         return HttpResponseRedirect(reverse("auctions:listing", args=(id,)))
 
 
-@login_required(login_url="auctions:login")
-def bid(request):
-    if request.method == "POST":
-        list_id = int(request.POST["list_id"])
-        list = Listing.objects.get(pk=list_id)
+# @login_required(login_url="auctions:login")
+# def bid(request):
+#     if request.method == "POST":
+#         list_id = int(request.POST["list_id"])
+#         list = Listing.objects.get(pk=list_id)
 
-        if not list.active:
-            messages.error(
-                request, f"You cannot bid anymore, the auction is already closed!"
-            )
-            return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
+#         if not list.active:
+#             messages.error(
+#                 request, f"You cannot bid anymore, the auction is already closed!"
+#             )
+#             return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
 
-        minAmount = (
-            list.current_bid.amount + 1 if list.current_bid else list.starting_bid
-        )
-        user_id = int(request.POST["user_id"])
-        user = User.objects.get(id=user_id)
-        bid_form = BidForm(request.POST)
+#         minAmount = (
+#             list.current_bid.amount + 1 if list.current_bid else list.amount
+#         )
+#         user_id = int(request.POST["user_id"])
+#         user = User.objects.get(id=user_id)
+#         bid_form = BidForm(request.POST)
 
-        if bid_form.is_valid():
-            amount = bid_form.cleaned_data["amount"]
+#         if bid_form.is_valid():
+#             amount = bid_form.cleaned_data["amount"]
 
-            if amount >= minAmount:
-                current_bid = Bid(user=user, amount=amount)
-                current_bid.save()
-                list.current_bid = current_bid
-                list.save()
-                # messages.success(request, "Bid successful!")
-                return HttpResponseRedirect(
-                    reverse("auctions:listing", args=(list_id,))
-                )
+#             if amount >= minAmount:
+#                 current_bid = Bid(user=user, amount=amount)
+#                 current_bid.save()
+#                 list.current_bid = current_bid
+#                 list.save()
+#                 # messages.success(request, "Bid successful!")
+#                 return HttpResponseRedirect(
+#                     reverse("auctions:listing", args=(list_id,))
+#                 )
 
-            else:
-                messages.error(request, f"Amount should be at least ${minAmount}")
+#             else:
+#                 messages.error(request, f"Amount should be at least ${minAmount}")
 
-                return HttpResponseRedirect(
-                    reverse("auctions:listing", args=(list_id,))
-                )
-        else:
-            return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
+#                 return HttpResponseRedirect(
+#                     reverse("auctions:listing", args=(list_id,))
+#                 )
+#         else:
+#             return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
 
 
 @login_required(login_url="auctions:login")
@@ -337,9 +337,6 @@ def product_info(request, list_id):
         if user in users:
             list = Listing.objects.get(pk=list_id)
 
-            if list.current_bid:
-                if not list.active and list.current_bid.user == user:
-                    messages.info(request, "You've won the auction!")
 
             context = {
                 "list": list,
@@ -348,11 +345,8 @@ def product_info(request, list_id):
                 "commentForm": CommentForm(),
             }
 
-            if list.active:
-                context["bid_form"] = BidForm()
-                context["close"] = True if list.user == user else False
 
-            return render(request, "auctions/listing.html", context)
+            return render(request, "auctions/product_info.html", context)
     else:
         list = Listing.objects.get(pk=list_id)
         return render(
@@ -361,3 +355,4 @@ def product_info(request, list_id):
             {"list": list, "comments": list.comments.all().order_by("-date")},
         )
 
+# TODO: add pagination to this web app
