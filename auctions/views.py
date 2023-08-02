@@ -9,12 +9,12 @@ from django.contrib import messages
 # from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from .forms import ListForm, CommentForm, CategoryForm
-from .models import User, Listing, Comment, Category
+from .forms import ListForm, CommentForm
+from .models import User, Product, Comment
 
 
 def index(request):
-    lists = Listing.objects.all()
+    lists = Product.objects.all()
 
     return render(
         request,
@@ -93,9 +93,10 @@ def register(request):
 def new_list(request):
     if request.method == "POST":
         user = User.objects.get(pk=request.user.id)
+        # user = request.user.id
         list_form = ListForm(request.POST)
-        category_form = CategoryForm(request.POST)
-        list = Listing()
+        # category_form = CategoryForm(request.POST)
+        list = Product()
 
         if list_form.is_valid():
             list.title = list_form.cleaned_data["title"]
@@ -105,34 +106,35 @@ def new_list(request):
             list.user = user
             # newList.category = newCategory
 
-            if category_form.is_valid():
-                category = category_form.cleaned_data["name"]
+            # if category_form.is_valid():
+            #     category = category_form.cleaned_data["name"]
 
-                if len(category) != 0:
-                    # new_category = Category()
-                    existing = False
+            #     if len(category) != 0:
+            #         # new_category = Category()
+            #         existing = False
 
-                    for existing_category in Category.objects.all():
-                        if existing_category.name.lower() == category.lower():
-                            list.category = existing_category
-                            existing = True
+            #         for existing_category in Category.objects.all():
+            #             if existing_category.name.lower() == category.lower():
+            #                 list.category = existing_category
+            #                 existing = True
 
-                    if not existing:
-                        # new_category.name = category
-                        new_category = Category.objects.create(name=category)
-                        # new_category.save()
-                        list.category = new_category
+            #         if not existing:
+            #             # new_category.name = category
+            #             new_category = Category.objects.create(name=category)
+            #             # new_category.save()
+            #             list.category = new_category
 
-                list.save()
+            #     list.save()
 
-                return HttpResponseRedirect(
-                    reverse("auctions:listing", args=(list.id,))
-                )
+        return HttpResponseRedirect(
+            reverse("auctions:listing", args=(list.id,))
+        )
     else:
         return render(
             request,
             "auctions/new_list.html",
-            {"list_form": ListForm(), "category_form": CategoryForm()},
+            # {"list_form": ListForm(), "category_form": CategoryForm()},
+            {"list_form": ListForm()},
         )
 
 
@@ -142,7 +144,7 @@ def listing(request, list_id):
         user = User.objects.get(id=request.user.id)
 
         if user in users:
-            list = Listing.objects.get(pk=list_id)
+            list = Product.objects.get(pk=list_id)
 
             # if list.current_bid:
             #     if not list.active and list.current_bid.user == user:
@@ -159,9 +161,9 @@ def listing(request, list_id):
                 # context["bid_form"] = BidForm()
                 # context["close"] = True if list.user == user else False
 
-            return render(request, "auctions/listing.html", context)
+            return render(request, "auctions/product_info.html", context)
     else:
-        list = Listing.objects.get(pk=list_id)
+        list = Product.objects.get(pk=list_id)
         return render(
             request,
             "auctions/listing.html",
@@ -174,7 +176,7 @@ def add_watchlist(request):
     if request.method == "POST":
         user = User.objects.get(id=request.user.id)
         id = int(request.POST["list_id"])
-        list = Listing.objects.get(pk=id)
+        list = Product.objects.get(pk=id)
         watchlists = user.watchlists.all()
 
         if list not in watchlists:
@@ -190,7 +192,7 @@ def remove_watchlist(request):
     if request.method == "POST":
         user = User.objects.get(id=request.user.id)
         id = int(request.POST["list_id"])
-        list = Listing.objects.get(pk=id)
+        list = Product.objects.get(pk=id)
         watchlists = user.watchlists.all()
 
         if list in watchlists:
@@ -204,7 +206,7 @@ def remove_watchlist(request):
 # def bid(request):
 #     if request.method == "POST":
 #         list_id = int(request.POST["list_id"])
-#         list = Listing.objects.get(pk=list_id)
+#         list = Product.objects.get(pk=list_id)
 
 #         if not list.active:
 #             messages.error(
@@ -251,7 +253,7 @@ def add_comment(request):
         if comment_form.is_valid():
             comment = Comment()
             comment.user = request.user
-            comment.list = Listing.objects.get(pk=list_id)
+            comment.list = Product.objects.get(pk=list_id)
             comment.data = comment_form.cleaned_data["data"]
             comment.save()
 
@@ -282,7 +284,7 @@ def view_category(request):
 def view_by_category_name(request, category_name):
     category_name = str(category_name)
     category = Category.objects.get(name=category_name)
-    lists = Listing.objects.filter(category=category, active=True)
+    lists = Product.objects.filter(category=category, active=True)
 
     return render(
         # TODO: create seperate html file for view_by_category_name
@@ -293,7 +295,7 @@ def view_by_category_name(request, category_name):
 @login_required(login_url="auctions:login")
 def close_listing(request, list_id):
     if request.method == "POST":
-        list = Listing.objects.get(pk=list_id)
+        list = Product.objects.get(pk=list_id)
         if list.active:
             list.active = False
             list.save()
@@ -302,8 +304,8 @@ def close_listing(request, list_id):
 
 @login_required(login_url="auctions:login")
 def display_products(request):
-    # products = Listing.objects.exclude(active=False).all()
-    products = Listing.objects.filter(user=request.user).all()
+    # products = Product.objects.exclude(active=False).all()
+    products = Product.objects.filter(user=request.user).all()
 
     return render(
         request,
@@ -316,8 +318,8 @@ def display_products(request):
 
 # @login_required(login_url="auctions:login")
 # def display_item_info(request):
-#     # products = Listing.objects.exclude(active=False).all()
-#     products = Listing.objects.filter(user=request.user).all()
+#     # products = Product.objects.exclude(active=False).all()
+#     products = Product.objects.filter(user=request.user).all()
 
 #     return render(
 #         request,
@@ -335,7 +337,7 @@ def product_info(request, list_id):
         user = User.objects.get(id=request.user.id)
 
         if user in users:
-            list = Listing.objects.get(pk=list_id)
+            list = Product.objects.get(pk=list_id)
 
 
             context = {
@@ -348,7 +350,7 @@ def product_info(request, list_id):
 
             return render(request, "auctions/product_info.html", context)
     else:
-        list = Listing.objects.get(pk=list_id)
+        list = Product.objects.get(pk=list_id)
         return render(
             request,
             "auctions/product_info.html",
