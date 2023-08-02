@@ -17,7 +17,9 @@
     <div>
       <ul>
         <li>
-          <a href="{% url 'auctions:view_by_category_name' list.name %}" class="listing_link"> {{ list.name }}</a>
+          <a href="{% url 'auctions:view_by_category_name' list %}" class="listing_link"> {{ list }}</a>
+          {# <a href="{% url 'auctions:view_by_category_name' list.name %}" class="listing_link"> {{ list.name }}</a> #}
+          {# <p>{{list}}</p> #}
         </li>
       </ul>
     </div>

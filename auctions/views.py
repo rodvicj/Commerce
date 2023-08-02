@@ -100,6 +100,7 @@ def new_list(request):
 
         if list_form.is_valid():
             list.title = list_form.cleaned_data["title"]
+            list.category = list_form.cleaned_data["category"]
             list.description = list_form.cleaned_data["description"]
             list.image_url = list_form.cleaned_data["image_url"]
             list.amount = list_form.cleaned_data["amount"]
@@ -124,7 +125,7 @@ def new_list(request):
             #             # new_category.save()
             #             list.category = new_category
 
-            #     list.save()
+            list.save()
 
         return HttpResponseRedirect(
             reverse("auctions:listing", args=(list.id,))
@@ -272,8 +273,13 @@ def view_watchlist(request):
 
 
 def view_category(request):
-    categories = Category.objects.all()
-
+    # categories = Category.objects.all()
+    choices = Product.choices
+    # categories = Product.objects.all()
+    categories = []
+    for choice in choices:
+        categories.append(choice[1])
+    # choices = categories.field.choices
     return render(
         request,
         "auctions/category.html",
@@ -282,9 +288,10 @@ def view_category(request):
 
 # categories or category_names
 def view_by_category_name(request, category_name):
-    category_name = str(category_name)
-    category = Category.objects.get(name=category_name)
-    lists = Product.objects.filter(category=category, active=True)
+    category_name = str(category_name).lower()
+    # category = Category.objects.get(name=category_name)
+    lists = Product.objects.filter(category=category_name)
+    # lists = Product.objects.filter(category=category, active=True)
 
     return render(
         # TODO: create seperate html file for view_by_category_name
@@ -358,3 +365,8 @@ def product_info(request, list_id):
         )
 
 # TODO: add pagination to this web app
+# def get_context_data(self, **kwargs):
+#     context = super(CategoryPageView, self).get_context_data(**kwargs)
+#     category = self.get_object()
+#     products = Product.objects.filter(category=category)
+#     tags = Product.TagsChoices

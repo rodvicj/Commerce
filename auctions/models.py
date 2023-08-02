@@ -16,8 +16,8 @@ class User(AbstractUser):
 
 class Product(models.Model):
 # Fashion, Toys, Electronics, Home, etc.
-    Categories = (
-            ('fasion', 'Fashion'),
+    choices = (
+            ('fashion', 'Fashion'),
             ('toys', 'Toys'),
             ('electronics', 'Electronics'),
             ('home', 'Home'),
@@ -25,13 +25,13 @@ class Product(models.Model):
             )
     user = models.ForeignKey(User, blank=False, on_delete=models.CASCADE, related_name="lists")
     title = models.CharField(blank=False, max_length=128)
-    category = models.CharField(max_length=128, null=True, choices=Categories)
+    category = models.CharField(max_length=128, null=True, choices=choices)
     amount = models.PositiveIntegerField(blank=False)
     active = models.BooleanField(default=True)
     description = models.CharField(blank=False, max_length=512)
     image_url = models.URLField(blank=True)
     # category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE, related_name="categoryListings")
-    # TODO: change this add watchlist to add to cart
+    # TODO: change this add watchlist to add to cart and change watchlist html to View cart instead
     watchlist = models.ManyToManyField(User, blank=True, related_name="watchlists")
     # watchlist1 = models.OneToOneField(User, blank=True, related_name="watchlists")
 
