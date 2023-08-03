@@ -9,8 +9,8 @@ from django.contrib import messages
 # from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from .forms import ListForm, CommentForm
-from .models import User, Product, Comment
+from .forms import ListForm, CommentForm, CartForm
+from .models import User, Product, Comment, Cart
 
 
 def index(request):
@@ -340,29 +340,29 @@ def display_products(request):
 @login_required(login_url="auctions:login")
 def product_info(request, list_id):
     if request.user.id:
-        users = User.objects.all()
+        # users = User.objects.all()
         user = User.objects.get(id=request.user.id)
 
-        if user in users:
-            list = Product.objects.get(pk=list_id)
-
-
-            context = {
-                "list": list,
-                "watchlist": list in user.watchlists.all(),
-                "comments": list.comments.all().order_by("-date"),
-                "commentForm": CommentForm(),
-            }
-
-
-            return render(request, "auctions/product_info.html", context)
-    else:
+        # if user in users:
         list = Product.objects.get(pk=list_id)
-        return render(
-            request,
-            "auctions/product_info.html",
-            {"list": list, "comments": list.comments.all().order_by("-date")},
-        )
+
+
+        context = {
+            "list": list,
+            "watchlist": list in user.watchlists.all(),
+            "comments": list.comments.all().order_by("-date"),
+            "cartForm": CartForm(),
+        }
+
+
+        return render(request, "auctions/product_info.html", context)
+    # else:
+    #     list = Product.objects.get(pk=list_id)
+    #     return render(
+    #         request,
+    #         "auctions/product_info.html",
+    #         {"list": list, "comments": list.comments.all().order_by("-date")},
+    #     )
 
 # TODO: add pagination to this web app
 # def get_context_data(self, **kwargs):
@@ -370,3 +370,37 @@ def product_info(request, list_id):
 #     category = self.get_object()
 #     products = Product.objects.filter(category=category)
 #     tags = Product.TagsChoices
+
+
+@login_required(login_url="auctions:login")
+def add_to_cart(request):
+    if request.method == "POST":
+        list_id = int(request.POST["list_id"])
+        quantity = int(request.POST["quantity"])
+        item = Product.objects.get(pk=list_id)
+        cart = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
+        # cart = Product.objects.get(pk=list_id)
+        cart.save()
+
+        # user = User.objects.create_user(username, email, password)
+        # user.save()
+
+        # if comment_form.is_valid():
+        #     comment = Comment()
+        #     comment.user = request.user
+            # comment.data = comment_form.cleaned_data["data"]
+            # comment.save()
+
+        return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
+
+    if request.method == "POST":
+        cart_form = CartForm(request.POST)
+        list_id = int(request.POST["list_id"])
+
+        if cart_form.is_valid():
+            cart = CartForm()
+            cart.user = request.user
+            cart.quantity = cart_form.cleaned_data["quantity"]
+            cart.save()
+
+            return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))

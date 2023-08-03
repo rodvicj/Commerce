@@ -3,7 +3,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 # from django.core.exceptions import ValidationError
 
-from .models import Product, Comment
+from .models import Product, Comment, Cart
 
 # class BidForm(forms.ModelForm):
 
@@ -64,3 +64,20 @@ class CommentForm(forms.ModelForm):
             'data': forms.Textarea(attrs={'class': 'new-comment-textarea-container'}),
         }
 
+
+class CartForm(forms.ModelForm):
+
+    class Meta:
+        model = Cart
+        fields = ['quantity']
+        # quantity = forms.NumberInput(min=4),
+        # labels = {'data': _('')}
+        labels = {'quantity': _('quantity:')}
+
+        # quantity = models.PositiveIntegerField(blank=False, default=1)
+        widgets = {
+            # 'quantity': forms.Textarea(attrs={'class': 'new-comment-textarea-container'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'min': '2' }),
+            # 'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'quantity': forms.NumberInput(attrs={'min': '2' }),
+        }

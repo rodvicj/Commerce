@@ -20,5 +20,6 @@ urlpatterns = [
     path("close_listing/<int:list_id>", views.close_listing, name="close_listing"),
     # TODO: add url for user's product page, after finishing also add capabilities to view active products and inactive products
     path("products", views.display_products, name="display_products"),
-    path("product/<int:list_id>", views.product_info, name="product_info")
+    path("product/<int:list_id>", views.product_info, name="product_info"),
+    path("add_to_cart", views.add_to_cart, name="add_to_cart")
 ]

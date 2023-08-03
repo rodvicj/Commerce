@@ -52,7 +52,8 @@ class Comment(models.Model):
 
 class Cart(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_products")
-    quantity = models.PositiveIntegerField(blank=False)
+    quantity = models.PositiveIntegerField(blank=False, default=1)
+    # quantity = models.PositiveIntegerField(blank=False)
     product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name="cart_products")
     # date = models.DateTimeField(default=datetime.now, blank=True)
     # data = models.CharField(max_length=255)

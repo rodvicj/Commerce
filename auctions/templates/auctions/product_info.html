@@ -1,4 +1,4 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/base.html" %}
 
 {% load static %}
 
@@ -49,7 +49,8 @@
   <div class="app-body-container">
     <div class="body-container">
       <div class="photo-container">
-        <img src="{{ list.image_url }}" class="rounded mx-auto d-block" alt="img">
+        <img src="{{ list.image_url }}" class="img-fluid" alt="img">
+        {# <img src="{{ list.image_url }}" class="rounded mx-auto d-block" alt="img"> #}
         {# <img class="img" src="{{ list.image_url }}" alt="{{ list.title }}"> #}
       </div>
       <div class="description-main-container">
@@ -76,20 +77,21 @@
         </div>
       </div>
       {% if user.is_authenticated %}
-      {% if commentForm %}
+      {# {% if CartForm %} #}
       <div class="new-comment-container">
-        <form name="comment" method="post" action="{% url 'auctions:add_comment' %}">
+        <form name="add_to_cart_form" method="post" action="{% url 'auctions:add_to_cart' %}">
           <input type="hidden" name="list_id" value="{{ list.id }}" />
+          {# <input type="number" name="quantity" min="0" required /> #}
           {% csrf_token %}
-          {{ commentForm.as_p }}
+          {{ cartForm.as_p }}
           <div class="add-comment-container">
             <div class="add-comment-button-container">
-              <input type="submit" value="Add comment">
+              <input type="submit" value="Add to cart">
             </div>
           </div>
         </form>
       </div>
-      {% endif %}
+      {# {% endif %} #}
       {% endif %}
     </div>
   </div>

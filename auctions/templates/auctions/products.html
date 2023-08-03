@@ -1,4 +1,4 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/base.html" %}
 
 {% load static %}
 
@@ -17,7 +17,8 @@
       <div class="item-body">
         <div>
           {# <div class="img-container"><img src="{{ list.image_url }}" alt="{{ list.title }}"></div> #}
-          <img src="{{ list.image_url }}" class="rounded mx-auto d-block" alt="{{ list.title }}">
+          {# <img src="{{ list.image_url }}" class="rounded mx-auto d-block" alt="{{ list.title }}"> #}
+          <img src="{{ list.image_url }}" class="img-fluid" alt="{{ list.title }}">
         </div>
       </div>
 
