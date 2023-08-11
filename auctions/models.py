@@ -7,6 +7,7 @@ from datetime import datetime
 class User(AbstractUser):
     pass
 
+
 # class Category(models.Model):
 #     name = models.CharField(blank=True, max_length=32)
 
@@ -15,15 +16,17 @@ class User(AbstractUser):
 
 
 class Product(models.Model):
-# Fashion, Toys, Electronics, Home, etc.
+    # Fashion, Toys, Electronics, Home, etc.
     choices = (
-            ('fashion', 'Fashion'),
-            ('toys', 'Toys'),
-            ('electronics', 'Electronics'),
-            ('home', 'Home'),
-            ('others', 'Others'),
-            )
-    user = models.ForeignKey(User, blank=False, on_delete=models.CASCADE, related_name="lists")
+        ("fashion", "Fashion"),
+        ("toys", "Toys"),
+        ("electronics", "Electronics"),
+        ("home", "Home"),
+        ("others", "Others"),
+    )
+    user = models.ForeignKey(
+        User, blank=False, on_delete=models.CASCADE, related_name="lists"
+    )
     title = models.CharField(blank=False, max_length=128)
     category = models.CharField(max_length=128, null=True, choices=choices)
     amount = models.PositiveIntegerField(blank=False)
@@ -41,8 +44,12 @@ class Product(models.Model):
 
 # TODO: change this comment to Cart
 class Comment(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name="comments")
-    list = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(
+        User, null=True, on_delete=models.CASCADE, related_name="comments"
+    )
+    list = models.ForeignKey(
+        Product, null=True, on_delete=models.CASCADE, related_name="comments"
+    )
     date = models.DateTimeField(default=datetime.now, blank=True)
     data = models.CharField(max_length=255)
 
@@ -51,12 +58,17 @@ class Comment(models.Model):
 
 
 class Cart(models.Model):
-    buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_products")
+    buyer = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="cart_products"
+    )
     quantity = models.PositiveIntegerField(blank=False, default=1)
     # quantity = models.PositiveIntegerField(blank=False)
-    product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name="cart_products")
+    product = models.ForeignKey(
+        Product, null=True, on_delete=models.CASCADE, related_name="cart_products"
+    )
     # date = models.DateTimeField(default=datetime.now, blank=True)
     # data = models.CharField(max_length=255)
+
 
 # class CartProduct(CreatedModified):
 #     buyer = models.ForeignKey('users.User', related_name='cart_products', on_delete=models.CASCADE)

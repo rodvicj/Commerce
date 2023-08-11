@@ -4,10 +4,10 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect  # , HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-from django.contrib import messages
+# from django.contrib import messages
 
 # from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
+# from django.utils.translation import gettext_lazy as _
 
 from .forms import ListForm, CommentForm, CartForm
 from .models import User, Product, Comment, Cart
@@ -127,9 +127,7 @@ def new_list(request):
 
             list.save()
 
-        return HttpResponseRedirect(
-            reverse("auctions:listing", args=(list.id,))
-        )
+        return HttpResponseRedirect(reverse("auctions:listing", args=(list.id,)))
     else:
         return render(
             request,
@@ -159,8 +157,8 @@ def listing(request, list_id):
             }
 
             # if list.active:
-                # context["bid_form"] = BidForm()
-                # context["close"] = True if list.user == user else False
+            # context["bid_form"] = BidForm()
+            # context["close"] = True if list.user == user else False
 
             return render(request, "auctions/product_info.html", context)
     else:
@@ -185,7 +183,6 @@ def add_watchlist(request):
             list.save()
 
         return HttpResponseRedirect(reverse("auctions:listing", args=(id,)))
-
 
 
 @login_required(login_url="auctions:login")
@@ -268,7 +265,9 @@ def view_watchlist(request):
 
     return render(
         # TODO: create seperate html file for view_watchlist
-        request, "auctions/index.html", {"lists": watchlists, "heading": "Watchlists"}
+        request,
+        "auctions/index.html",
+        {"lists": watchlists, "heading": "Watchlists"},
     )
 
 
@@ -286,6 +285,7 @@ def view_category(request):
         {"lists": categories},
     )
 
+
 # categories or category_names
 def view_by_category_name(request, category_name):
     category_name = str(category_name).lower()
@@ -295,7 +295,9 @@ def view_by_category_name(request, category_name):
 
     return render(
         # TODO: create seperate html file for view_by_category_name
-        request, "auctions/index.html", {"lists": lists, "heading": category_name}
+        request,
+        "auctions/index.html",
+        {"lists": lists, "heading": category_name},
     )
 
 
@@ -309,6 +311,7 @@ def close_listing(request, list_id):
 
         return HttpResponseRedirect(reverse("auctions:index"))
 
+
 @login_required(login_url="auctions:login")
 def display_products(request):
     # products = Product.objects.exclude(active=False).all()
@@ -321,7 +324,7 @@ def display_products(request):
             "lists": products,
         },
     )
-    
+
 
 # @login_required(login_url="auctions:login")
 # def display_item_info(request):
@@ -335,7 +338,8 @@ def display_products(request):
 #             "lists": products,
 #         },
 #     )
-#     
+#
+
 
 @login_required(login_url="auctions:login")
 def product_info(request, list_id):
@@ -346,14 +350,12 @@ def product_info(request, list_id):
         # if user in users:
         list = Product.objects.get(pk=list_id)
 
-
         context = {
             "list": list,
             "watchlist": list in user.watchlists.all(),
             "comments": list.comments.all().order_by("-date"),
             "cartForm": CartForm(),
         }
-
 
         return render(request, "auctions/product_info.html", context)
     # else:
@@ -363,6 +365,7 @@ def product_info(request, list_id):
     #         "auctions/product_info.html",
     #         {"list": list, "comments": list.comments.all().order_by("-date")},
     #     )
+
 
 # TODO: add pagination to this web app
 # def get_context_data(self, **kwargs):
@@ -388,8 +391,8 @@ def add_to_cart(request):
         # if comment_form.is_valid():
         #     comment = Comment()
         #     comment.user = request.user
-            # comment.data = comment_form.cleaned_data["data"]
-            # comment.save()
+        # comment.data = comment_form.cleaned_data["data"]
+        # comment.save()
 
         return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
 
