@@ -31,6 +31,7 @@ $PROJECT_ROOT
 
 * install packages by running `pip: -r requirements.txt`
 * run `python manage.py runserver` to start the server
+* Start the program using "make run-server"
 
 
 ## TODO
