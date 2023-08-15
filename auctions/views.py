@@ -378,10 +378,14 @@ def product_info(request, list_id):
 @login_required(login_url="auctions:login")
 def add_to_cart(request):
     if request.method == "POST":
+        # TODO: return error if quantity is < 1
         list_id = int(request.POST["list_id"])
         quantity = int(request.POST["quantity"])
         item = Product.objects.get(pk=list_id)
         cart = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
+
+        # NOTE: validators will be run when using full_clean() method
+        cart.full_clean()
         # cart = Product.objects.get(pk=list_id)
         cart.save()
 
@@ -394,7 +398,7 @@ def add_to_cart(request):
         # comment.data = comment_form.cleaned_data["data"]
         # comment.save()
 
-        return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
+        return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
 
     if request.method == "POST":
         cart_form = CartForm(request.POST)
@@ -406,4 +410,6 @@ def add_to_cart(request):
             cart.quantity = cart_form.cleaned_data["quantity"]
             cart.save()
 
-            return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
+            return HttpResponseRedirect(
+                reverse("auctions:product_info", args=(list_id,))
+            )

@@ -1,7 +1,10 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from datetime import datetime
+
+from django.db.models.fields import validators
 
 
 class User(AbstractUser):
@@ -57,12 +60,14 @@ class Comment(models.Model):
         return f"{self.user.username} commented {self.data} in {self.list.title}"
 
 
+# overs = models.PositiveIntegerField(default=10, validators=[MinValueValidator(1), MaxValueValidator(100)])
 class Cart(models.Model):
     buyer = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="cart_products"
     )
-    quantity = models.PositiveIntegerField(blank=False, default=1)
-    # quantity = models.PositiveIntegerField(blank=False)
+    # quantity = models.PositiveIntegerField(blank=False, default=1)
+    # quantity = models.PositiveIntegerField(default=2, validators)
+    quantity = models.PositiveIntegerField(default=2, validators=[MinValueValidator(1), MaxValueValidator(9)])
     product = models.ForeignKey(
         Product, null=True, on_delete=models.CASCADE, related_name="cart_products"
     )
