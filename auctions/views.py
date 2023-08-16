@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect  # , HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib import messages
 
 # from django.contrib import messages
 # from django.core.exceptions import ValidationError
@@ -379,18 +380,43 @@ def product_info(request, list_id):
 @login_required(login_url="auctions:login")
 def add_to_cart(request):
     if request.method == "POST":
-        # TODO: return error if quantity is < 1
+        cart = CartForm(request.POST)
         list_id = int(request.POST["list_id"])
         quantity = int(request.POST["quantity"])
         item = Product.objects.get(pk=list_id)
-        cart = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
 
         # NOTE: validators will be run when using full_clean() method
-        # TODO: Make sure to catch errors below this line and return appropriate steps
-        try:
-            cart.full_clean()
-        except ValidationError:
+        # TODO: Make sure to catch errors below this line and return appropriate steps;
+        # try:
+        # cart.full_clean()
+
+        if cart.is_valid():
+            cart = Cart.objects.create(
+                buyer=request.user, quantity=quantity, product=item
+            )
+
             return HttpResponseRedirect(reverse("auctions:index"))
+        else:
+            # TODO: add messages.info
+            # messages.info(request, "You've won the auction!")
+
+            messages.info(request, "You've won the auction!")
+            return HttpResponseRedirect(
+                reverse("auctions:product_info", args=(list_id,))
+            )
+
+            # cart.save()
+            # return HttpResponseRedirect(
+            #     reverse("auctions:product_info", args=(list_id,))
+            # )
+        # except ValidationError:
+        #     return render(
+        #         request,
+        #         "auctions/login.html",
+        #         {
+        #             "message": "Theres an error",
+        #         },
+        #     )
 
         # try:
         #     projects_data = Project.objects.all().order_by("-timestamp")
@@ -400,7 +426,6 @@ def add_to_cart(request):
         #     )
 
         # cart = Product.objects.get(pk=list_id)
-        cart.save()
 
         # user = User.objects.create_user(username, email, password)
         # user.save()
@@ -411,18 +436,18 @@ def add_to_cart(request):
         # comment.data = comment_form.cleaned_data["data"]
         # comment.save()
 
-        return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
+        # return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
 
-    if request.method == "POST":
-        cart_form = CartForm(request.POST)
-        list_id = int(request.POST["list_id"])
+    # if request.method == "POST":
+    #     cart_form = CartForm(request.POST)
+    #     list_id = int(request.POST["list_id"])
 
-        if cart_form.is_valid():
-            cart = CartForm()
-            cart.user = request.user
-            cart.quantity = cart_form.cleaned_data["quantity"]
-            cart.save()
+    #     if cart_form.is_valid():
+    #         cart = CartForm()
+    #         cart.user = request.user
+    #         cart.quantity = cart_form.cleaned_data["quantity"]
+    #         cart.save()
 
-            return HttpResponseRedirect(
-                reverse("auctions:product_info", args=(list_id,))
-            )
+    #         return HttpResponseRedirect(
+    #             reverse("auctions:product_info", args=(list_id,))
+    #         )

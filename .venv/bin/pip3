@@ -1,4 +1,4 @@
-#!/home/xusr/Repos/commerce/.venv/bin/python3
+#!/home/xusr/Repos/Commerce/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
