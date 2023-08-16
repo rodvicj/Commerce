@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect  # , HttpResponse
 from django.shortcuts import render
@@ -385,7 +386,19 @@ def add_to_cart(request):
         cart = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
 
         # NOTE: validators will be run when using full_clean() method
-        cart.full_clean()
+        # TODO: Make sure to catch errors below this line and return appropriate steps
+        try:
+            cart.full_clean()
+        except ValidationError:
+            return HttpResponseRedirect(reverse("auctions:index"))
+
+        # try:
+        #     projects_data = Project.objects.all().order_by("-timestamp")
+        # except Project.DoesNotExist:
+        #     return JsonResponse(
+        #         {"message": "Projects not found"}, status=status.HTTP_404_NOT_FOUND
+        #     )
+
         # cart = Product.objects.get(pk=list_id)
         cart.save()
 
