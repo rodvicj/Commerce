@@ -1,8 +1,15 @@
-run-server:
-	poetry run python manage.py runserver
+.PHONY: install
+install:
+	poetry install
 
+.PHONY: makemigrations
+makemigrations:
+	poetry run python manage.py makemigrations
+
+.PHONY: migrate
 migrate:
 	poetry run python manage.py migrate
 
-migrations:
-	poetry run python manage.py makemigrations
+.PHONY: runserver
+runserver:
+	poetry run python manage.py runserver

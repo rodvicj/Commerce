@@ -15,7 +15,7 @@ files = [
 typing-extensions = {version = ">=4", markers = "python_version < \"3.11\""}
 
 [package.extras]
-tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
+tests = ["mypy (>=0.800()", "pytest", "pytest-asyncio"]
 
 [[package]]
 name = "django"

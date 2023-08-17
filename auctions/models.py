@@ -3,8 +3,10 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from datetime import datetime
+from django.db.models.expressions import fields
 
 from django.db.models.fields import validators
+from django.forms import fields_for_model
 
 
 class User(AbstractUser):
@@ -31,6 +33,7 @@ class Product(models.Model):
         User, blank=False, on_delete=models.CASCADE, related_name="lists"
     )
     title = models.CharField(blank=False, max_length=128)
+    quantity = models.PositiveIntegerField(blank=False, default=1)
     category = models.CharField(max_length=128, null=True, choices=choices)
     amount = models.PositiveIntegerField(blank=False)
     active = models.BooleanField(default=True)
@@ -43,6 +46,8 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.user}"
+
+    # my_field = property(get_quantity)
 
 
 # TODO: change this comment to Cart
@@ -67,10 +72,27 @@ class Cart(models.Model):
     )
     # quantity = models.PositiveIntegerField(blank=False, default=1)
     # quantity = models.PositiveIntegerField(default=2, validators)
-    quantity = models.PositiveIntegerField(default=2, validators=[MinValueValidator(1), MaxValueValidator(9)])
     product = models.ForeignKey(
         Product, null=True, on_delete=models.CASCADE, related_name="cart_products"
     )
+    # # TODO: use the quantity of the product as max_value
+    # quantity = models.PositiveIntegerField(default=product.quantity)
+
+    @property
+    def quantity(self):
+        return models.PositiveIntegerField(
+            default=1,
+            validators=[
+                MinValueValidator(1),
+                MaxValueValidator(self.product.quantity),
+            ],
+        )
+
+    # validators=[
+    #     MinValueValidator(1),
+    #     MaxValueValidator(product.my_field),
+    # ],
+
     # date = models.DateTimeField(default=datetime.now, blank=True)
     # data = models.CharField(max_length=255)
 

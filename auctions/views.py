@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect  # , HttpResponse
 from django.shortcuts import render
@@ -396,11 +395,19 @@ def add_to_cart(request):
             )
 
             return HttpResponseRedirect(reverse("auctions:index"))
+
         else:
             # TODO: add messages.info
             # messages.info(request, "You've won the auction!")
 
-            messages.info(request, "You've won the auction!")
+            if quantity < 1:
+
+                messages.error(request, f"Invalid quantity")
+                # messages.info(
+                #     request, "Quantity should be at least 1 pc"
+                # )
+            elif quantity > 5:
+                messages.info(request, "Maximum item you can add to cart is quanity")
             return HttpResponseRedirect(
                 reverse("auctions:product_info", args=(list_id,))
             )

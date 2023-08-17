@@ -72,14 +72,10 @@ class CartForm(forms.ModelForm):
     class Meta:
         model = Cart
         fields = ["quantity"]
-        # quantity = forms.IntegerField(validators=[MinValueValidator(1)])
-        # quantity = forms.IntegerField(default=1, label="Quantity", min_value=1, max_value=5)
-        # quantity = forms.NumberInput(min=4),
-        # labels = {'data': _('')}
-        # labels = {"quantity": _("quantity:")}
-        # min_value = 1
 
-        # widgets = { "quantity": forms.NumberInput(attrs={"class": "form-control"}),}
+        # widgets = {
+        #     "quantity": forms.NumberInput(attrs={"class": "form-control"}),
+        # }
 
 
 # class CartForm(forms.Form):

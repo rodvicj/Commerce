@@ -25,6 +25,8 @@ $PROJECT_ROOT
 
 
 ## Installation
+1. ```make install``` - install all the dependencies
+2. ```make runserver``` - start the development server
 
 
 ## Usage

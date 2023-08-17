@@ -6,18 +6,6 @@
 {% block body %}
 
 <div class="heading-container">
-
-  <div class="heading-container">
-    {% if messages %}
-    {% for message in messages %}
-    {# <span>{{ messages.info }}</span> #}
-    <span>{{ message }}</span>
-    {% endfor %}
-    {% endif %}
-  </div>
-
-
-
   <div class="title-container">
     <strong>
       {{ list.title | capfirst }}
@@ -69,7 +57,6 @@
       </div>
     </div>
   </div>
-
   <div class="comments-container">
     <div class="comment-heading-container">
       <div class="comment-body-container">
@@ -87,9 +74,16 @@
     {% if user.is_authenticated %}
     {# {% if CartForm %} #}
     <div class="new-comment-container">
+      <div class="heading-container">
+        {% if messages %}
+        {% for message in messages %}
+        {# <span>{{ messages.info }}</span> #}
+        <span>{{ message }}</span>
+        {% endfor %}
+        {% endif %}
+      </div>
       <form name="add_to_cart_form" method="post" action="{% url 'auctions:add_to_cart' %}">
         <input type="hidden" name="list_id" value="{{ list.id }}" />
-        {# <input type="number" name="quantity" min="0" required /> #}
         {% csrf_token %}
         {{ cartForm.as_p }}
         <div class="add-comment-container">
@@ -102,6 +96,5 @@
     {# {% endif %} #}
     {% endif %}
   </div>
-</div>
 </div>
 {% endblock %}
