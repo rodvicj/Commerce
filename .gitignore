@@ -30,7 +30,7 @@ db.sqlite3
 media
 
 # Environments
-.venv
+# .venv
 /.env
 /local
 ENV/
