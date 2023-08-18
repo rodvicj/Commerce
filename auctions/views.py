@@ -10,7 +10,7 @@ from django.contrib import messages
 # from django.core.exceptions import ValidationError
 # from django.utils.translation import gettext_lazy as _
 
-from .forms import ListForm, CommentForm, CartForm
+from .forms import ListForm, CartForm
 from .models import User, Product, Comment, Cart
 
 
@@ -128,7 +128,7 @@ def new_list(request):
 
             list.save()
 
-        return HttpResponseRedirect(reverse("auctions:listing", args=(list.id,)))
+        return HttpResponseRedirect(reverse("auctions:product_info", args=(list.id,)))
     else:
         return render(
             request,
@@ -166,7 +166,7 @@ def listing(request, list_id):
         list = Product.objects.get(pk=list_id)
         return render(
             request,
-            "auctions/listing.html",
+            "auctions/product_info.html",
             {"list": list, "comments": list.comments.all().order_by("-date")},
         )
 
@@ -183,7 +183,7 @@ def add_watchlist(request):
             list.watchlist.add(user)
             list.save()
 
-        return HttpResponseRedirect(reverse("auctions:listing", args=(id,)))
+        return HttpResponseRedirect(reverse("auctions:product_info", args=(id,)))
 
 
 @login_required(login_url="auctions:login")
@@ -198,7 +198,7 @@ def remove_watchlist(request):
             list.watchlist.remove(user)
             list.save()
 
-        return HttpResponseRedirect(reverse("auctions:listing", args=(id,)))
+        return HttpResponseRedirect(reverse("auctions:product_info", args=(id,)))
 
 
 # @login_required(login_url="auctions:login")
@@ -256,7 +256,7 @@ def add_comment(request):
             comment.data = comment_form.cleaned_data["data"]
             comment.save()
 
-            return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
+            return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
 
 
 @login_required(login_url="auctions:login")
@@ -355,7 +355,7 @@ def product_info(request, list_id):
             "list": list,
             "watchlist": list in user.watchlists.all(),
             "comments": list.comments.all().order_by("-date"),
-            "cartForm": CartForm(),
+            "cartForm": CartForm(max_value=list.quantity),
         }
 
         return render(request, "auctions/product_info.html", context)
@@ -379,15 +379,10 @@ def product_info(request, list_id):
 @login_required(login_url="auctions:login")
 def add_to_cart(request):
     if request.method == "POST":
-        cart = CartForm(request.POST)
         list_id = int(request.POST["list_id"])
         quantity = int(request.POST["quantity"])
         item = Product.objects.get(pk=list_id)
-
-        # NOTE: validators will be run when using full_clean() method
-        # TODO: Make sure to catch errors below this line and return appropriate steps;
-        # try:
-        # cart.full_clean()
+        cart = CartForm(request.POST, max_value=item.quantity)
 
         if cart.is_valid():
             cart = Cart.objects.create(
@@ -401,60 +396,9 @@ def add_to_cart(request):
             # messages.info(request, "You've won the auction!")
 
             if quantity < 1:
-
-                messages.error(request, f"Invalid quantity")
-                # messages.info(
-                #     request, "Quantity should be at least 1 pc"
-                # )
+                messages.error(request, "Invalid quantity")
             elif quantity > 5:
                 messages.info(request, "Maximum item you can add to cart is quanity")
             return HttpResponseRedirect(
                 reverse("auctions:product_info", args=(list_id,))
             )
-
-            # cart.save()
-            # return HttpResponseRedirect(
-            #     reverse("auctions:product_info", args=(list_id,))
-            # )
-        # except ValidationError:
-        #     return render(
-        #         request,
-        #         "auctions/login.html",
-        #         {
-        #             "message": "Theres an error",
-        #         },
-        #     )
-
-        # try:
-        #     projects_data = Project.objects.all().order_by("-timestamp")
-        # except Project.DoesNotExist:
-        #     return JsonResponse(
-        #         {"message": "Projects not found"}, status=status.HTTP_404_NOT_FOUND
-        #     )
-
-        # cart = Product.objects.get(pk=list_id)
-
-        # user = User.objects.create_user(username, email, password)
-        # user.save()
-
-        # if comment_form.is_valid():
-        #     comment = Comment()
-        #     comment.user = request.user
-        # comment.data = comment_form.cleaned_data["data"]
-        # comment.save()
-
-        # return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
-
-    # if request.method == "POST":
-    #     cart_form = CartForm(request.POST)
-    #     list_id = int(request.POST["list_id"])
-
-    #     if cart_form.is_valid():
-    #         cart = CartForm()
-    #         cart.user = request.user
-    #         cart.quantity = cart_form.cleaned_data["quantity"]
-    #         cart.save()
-
-    #         return HttpResponseRedirect(
-    #             reverse("auctions:product_info", args=(list_id,))
-    #         )

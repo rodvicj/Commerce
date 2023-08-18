@@ -1,25 +1,10 @@
 from django import forms
-from django.forms.formsets import DEFAULT_MIN_NUM
 
 # from django.forms import widgets
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-# from django.core.exceptions import ValidationError
-
-from .models import Product, Comment, Cart
-
-# class BidForm(forms.ModelForm):
-
-#     class Meta:
-#         model = Bid
-#         fields = ['amount']
-#         # error_messages = {'min_value': _('Please enter minimum of $10.')}
-#         labels = {'amount': _('')}
-#
-#         widgets = {
-#             'amount': forms.NumberInput(attrs={'placeholder': 'Enter your bid here'})
-#         }
+from .models import Product, Cart
 
 
 class ListForm(forms.ModelForm):
@@ -39,44 +24,48 @@ class ListForm(forms.ModelForm):
         }
 
 
-# class CategoryForm(forms.ModelForm):
-#     class Meta:
-#         model = Category
-#         fields = ['name']
-#         labels = {'name': _('Category (e.g. Fashion, Toys, Electronics, Home, etc.)')}
-
-#         widgets = {
-#             # 'category': forms.Select(attrs={'class': 'form-control'}),
-#             'name': forms.TextInput(attrs={'class': 'form-control'}),
-#         }
-
-
 class CloseListingForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ["active"]
 
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ["data"]
-        labels = {"data": _("")}
-
-        widgets = {
-            "data": forms.Textarea(attrs={"class": "new-comment-textarea-container"}),
-        }
-
-
 class CartForm(forms.ModelForm):
+    # NOTE: args = arguments, kwargs = keyword arguments
+    def __init__(self, *args, **kwargs):
+        max_value = kwargs.pop("max_value")
+        super(CartForm, self).__init__(*args, **kwargs)
+        self.fields["quantity"].widget = forms.NumberInput(
+            attrs={
+                # "value": 1,
+                "min": 1,
+                "max": max_value,
+                "class": "form-control",
+            },
+        )
+        self.fields["quantity"].validators = [
+            MinValueValidator(1),
+            MaxValueValidator(max_value),
+        ]
+
+        self.fields["quantity"].error_messages = {"min_value": "Please enter your name"}
+
+        # self.fields["quantity"].error_messages = {"min_value": _("hi there")}
+
     class Meta:
         model = Cart
         fields = ["quantity"]
 
-        # widgets = {
-        #     "quantity": forms.NumberInput(attrs={"class": "form-control"}),
-        # }
 
+# forms.CharField(error_messages={"required": "Please enter your name"})
+# class BidForm(forms.ModelForm):
 
-# class CartForm(forms.Form):
-#     quantity = forms.IntegerField(validators=[MinValueValidator(1)], min_value=1)
+#     class Meta:
+#         model = Bid
+#         fields = ['amount']
+#         # error_messages = {'min_value': _('Please enter minimum of $10.')}
+#         labels = {'amount': _('')}
+#
+#         widgets = {
+#             'amount': forms.NumberInput(attrs={'placeholder': 'Enter your bid here'})
+#         }
