@@ -11,7 +11,7 @@ from django.contrib import messages
 # from django.utils.translation import gettext_lazy as _
 
 from .forms import ListForm, CartForm
-from .models import User, Product, Comment, Cart
+from .models import User, Product, Cart
 
 
 def index(request):
@@ -138,37 +138,37 @@ def new_list(request):
         )
 
 
-def listing(request, list_id):
-    if request.user.id:
-        users = User.objects.all()
-        user = User.objects.get(id=request.user.id)
+# def listing(request, list_id):
+#     if request.user.id:
+#         users = User.objects.all()
+#         user = User.objects.get(id=request.user.id)
 
-        if user in users:
-            list = Product.objects.get(pk=list_id)
+#         if user in users:
+#             list = Product.objects.get(pk=list_id)
 
-            # if list.current_bid:
-            #     if not list.active and list.current_bid.user == user:
-            #         messages.info(request, "You've won the auction!")
+#             # if list.current_bid:
+#             #     if not list.active and list.current_bid.user == user:
+#             #         messages.info(request, "You've won the auction!")
 
-            context = {
-                "list": list,
-                "watchlist": list in user.watchlists.all(),
-                "comments": list.comments.all().order_by("-date"),
-                "commentForm": CommentForm(),
-            }
+#             context = {
+#                 "list": list,
+#                 "watchlist": listin user.watchlists.all(),
+#                 "comments": list.comments.all().order_by("-date"),
+#                 "commentForm": CommentForm(),
+#             }
 
-            # if list.active:
-            # context["bid_form"] = BidForm()
-            # context["close"] = True if list.user == user else False
+#             # if list.active:
+#             # context["bid_form"] = BidForm()
+#             # context["close"] = True if list.user == user else False
 
-            return render(request, "auctions/product_info.html", context)
-    else:
-        list = Product.objects.get(pk=list_id)
-        return render(
-            request,
-            "auctions/product_info.html",
-            {"list": list, "comments": list.comments.all().order_by("-date")},
-        )
+#             return render(request, "auctions/product_info.html", context)
+#     else:
+#         list = Product.objects.get(pk=list_id)
+#         return render(
+#             request,
+#             "auctions/product_info.html",
+#             {"list": list, "comments": list.comments.all().order_by("-date")},
+#         )
 
 
 @login_required(login_url="auctions:login")
@@ -244,22 +244,6 @@ def remove_watchlist(request):
 
 
 @login_required(login_url="auctions:login")
-def add_comment(request):
-    if request.method == "POST":
-        comment_form = CommentForm(request.POST)
-        list_id = int(request.POST["list_id"])
-
-        if comment_form.is_valid():
-            comment = Comment()
-            comment.user = request.user
-            comment.list = Product.objects.get(pk=list_id)
-            comment.data = comment_form.cleaned_data["data"]
-            comment.save()
-
-            return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
-
-
-@login_required(login_url="auctions:login")
 def view_watchlist(request):
     user = User.objects.get(id=request.user.id)
     watchlists = user.watchlists.all()
@@ -302,15 +286,15 @@ def view_by_category_name(request, category_name):
     )
 
 
-@login_required(login_url="auctions:login")
-def close_listing(request, list_id):
-    if request.method == "POST":
-        list = Product.objects.get(pk=list_id)
-        if list.active:
-            list.active = False
-            list.save()
+# @login_required(login_url="auctions:login")
+# def close_listing(request, list_id):
+#     if request.method == "POST":
+#         list = Product.objects.get(pk=list_id)
+#         if list.active:
+#             list.active = False
+#             list.save()
 
-        return HttpResponseRedirect(reverse("auctions:index"))
+#         return HttpResponseRedirect(reverse("auctions:index"))
 
 
 @login_required(login_url="auctions:login")
@@ -354,7 +338,6 @@ def product_info(request, list_id):
         context = {
             "list": list,
             "watchlist": list in user.watchlists.all(),
-            "comments": list.comments.all().order_by("-date"),
             "cartForm": CartForm(max_value=list.quantity),
         }
 
