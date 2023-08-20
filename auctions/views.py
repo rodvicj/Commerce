@@ -19,7 +19,7 @@ def index(request):
 
     return render(
         request,
-        "auctions/products.html",
+        "auctions/products1.html",
         {
             "lists": lists,
         },
