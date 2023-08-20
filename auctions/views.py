@@ -19,7 +19,7 @@ def index(request):
 
     return render(
         request,
-        "auctions/products1.html",
+        "auctions/products.html",
         {
             "lists": lists,
         },
@@ -281,7 +281,7 @@ def view_by_category_name(request, category_name):
     return render(
         # TODO: create seperate html file for view_by_category_name
         request,
-        "auctions/index.html",
+        "auctions/products.html",
         {"lists": lists, "heading": category_name},
     )
 

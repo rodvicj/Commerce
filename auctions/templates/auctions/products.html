@@ -20,28 +20,28 @@
     <div class="row">
       {% for list in lists %}
       <!-- Single Product -->
-      <div class="col-md-6 col-lg-4 col-xl-3">
+      <div class="col-md-6 col-lg-4 col-xl-3" onclick='location.href="{% url 'auctions:product_info' list.id %}";'>
         <div id="product-1" class="single-product">
           <div class="part-1" style=" background: url({{ list.image_url }})
             no-repeat center; background-size: cover; transition: all 0.3s; ">
-              <ul>
-                <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                <li><a href="#"><i class="fas fa-expand"></i></a></li>
-              </ul>
-            </div>
-            <div class="part-2">
-              <h3 class="product-title">{{ list.title }}</h3>
-              <h4 class="product-old-price">{{ list.description | slice:":80" }}</h4>
-              <h4 class="product-price">{{ list.amount }}</h4>
-            </div>
+            <ul>
+              <li><a href="{% url 'auctions:product_info' list.id %}"><i class="fas fa-shopping-cart"></i></a></li>
+              <li><a href="#"><i class="fas fa-heart"></i></a></li>
+              <li><a href="#"><i class="fas fa-plus"></i></a></li>
+              <li><a href="#"><i class="fas fa-expand"></i></a></li>
+            </ul>
+          </div>
+          <div class="part-2">
+            <h3 class="product-title">{{ list.title }}</h3>
+            <h4 class="product-old-price">{{ list.description | slice:":80" }}</h4>
+            <h4 class="product-price">{{ list.amount }}</h4>
           </div>
         </div>
-        {% empty %}
-        <h3>There's no active listing</h3>
-        {% endfor %}
       </div>
+      {% empty %}
+      <h3>There's no active listing</h3>
+      {% endfor %}
     </div>
+  </div>
 </section>
 {% endblock %}
