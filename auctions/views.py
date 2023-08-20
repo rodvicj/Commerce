@@ -341,7 +341,7 @@ def product_info(request, list_id):
             "cartForm": CartForm(max_value=list.quantity),
         }
 
-        return render(request, "auctions/product_info.html", context)
+        return render(request, "auctions/product_info1.html", context)
     # else:
     #     list = Product.objects.get(pk=list_id)
     #     return render(
