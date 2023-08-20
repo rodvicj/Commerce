@@ -15,7 +15,7 @@ files = [
 typing-extensions = {version = ">=4", markers = "python_version < \"3.11\""}
 
 [package.extras]
-tests = ["mypy (>=0.800()", "pytest", "pytest-asyncio"]
+tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
 
 [[package]]
 name = "django"
@@ -36,6 +36,16 @@ tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 [package.extras]
 argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
+
+[[package]]
+name = "fontawesomefree"
+version = "6.4.2"
+description = "Font Awesome Free"
+optional = false
+python-versions = "*"
+files = [
+    {file = "fontawesomefree-6.4.2-py3-none-any.whl", hash = "sha256:ceaff7efc4fc39dadff3c3ff7298a7a1095403110d373f22456bb1c34ab6db02"},
+]
 
 [[package]]
 name = "sqlparse"
@@ -78,4 +88,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "80e566e7e5b8d45ae03762aca4db0e2b424ebc410ba5ef64b1ff215bea08bdf0"
+content-hash = "0f7e11bdd3d765c9b692ecfa9d5f3001c0c00b1d4e8f382f63e8f845dff95c4a"
