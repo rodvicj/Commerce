@@ -404,7 +404,7 @@ a:hover {
 }
 
 .section-products .single-product .part-2 .product-old-price::after {
-  position: absolute;
+  /* position: absolute; */
   content: "";
   top: 50%;
   left: 0;
