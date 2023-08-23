@@ -311,7 +311,14 @@ a:hover {
 /* .section-products #product-1 .part-1::before { */
 .section-products #product-1 .part-1 {
   /* background: url("https://web.archive.org/web/20221125082248if_/https://i.ibb.co/L8Nrb7p/1.jpg") no-repeat center; */
-  background: url("https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/7561779ad83d4f16bb15acf0011c181c_9366/Bad_Bunny_Forum_-_Easter_Egg_Shoes_Multi_GW0265_01_standard.jpg") no-repeat center;
+  /* background: url("https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/7561779ad83d4f16bb15acf0011c181c_9366/Bad_Bunny_Forum_-_Easter_Egg_Shoes_Multi_GW0265_01_standard.jpg") no-repeat center; */
+  background-size: cover;
+  transition: all 0.3s;
+}
+
+.section-products #category-1 .part-1 {
+  /* background: url("https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/7561779ad83d4f16bb15acf0011c181c_9366/Bad_Bunny_Forum_-_Easter_Egg_Shoes_Multi_GW0265_01_standard.jpg") no-repeat center; */
+  background: url(https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg?w=1060) no-repeat center;
   background-size: cover;
   transition: all 0.3s;
 }
