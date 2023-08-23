@@ -16,5 +16,5 @@ urlpatterns = [
     path("category/<str:category_name>", views.view_by_category_name, name="view_by_category_name"),
     path("products", views.display_products, name="display_products"),
     path("product/<int:list_id>", views.product_info, name="product_info"),
-    path("add_to_cart", views.add_to_cart, name="add_to_cart")
+    path("add_to_cart", views.add_to_cart, name="add_to_cart"),
 ]

@@ -18,6 +18,5 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # TODO: change auctions to commerce
     path("", include("auctions.urls"))
 ]

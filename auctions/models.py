@@ -26,7 +26,8 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
     description = models.CharField(blank=False, max_length=512)
     image_url = models.URLField(blank=True)
-    # TODO: change this add watchlist to add to cart and change watchlist html to View cart instead
+    # TODO: change this add watchlist to add to cart and change watchlist html
+    # to View cart instead;
     watchlist = models.ManyToManyField(User, blank=True, related_name="watchlists")
 
     def __str__(self):
@@ -34,10 +35,6 @@ class Product(models.Model):
 
 
 class Cart(models.Model):
-    buyer = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="cart_products"
-    )
-    product = models.ForeignKey(
-        Product, null=True, on_delete=models.CASCADE, related_name="cart_products"
-    )
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_products")
+    product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name="cart_products")
     quantity = models.PositiveIntegerField(default=1)
