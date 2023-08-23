@@ -1,24 +1,52 @@
 {% extends "auctions/base.html" %}
 
 {% block body %}
-<div style="display: flex; align-items: center; flex-direction: column;">
-  <form class="form-container" action="{% url 'auctions:new_list' %}" method="post" style=" display: flex; flex-direction: column; align-items: center; width: 80%;">
-  <center>
-  <hr>
-    <h1>Create new list</h1>
-  <hr>
-  <br>
-  </center>
-    <input type="hidden" name="user_id" value="{{ user.id }}">
-    {% csrf_token %}
-      <div style="width: 80%;">
-        {{ list_form.as_p }}
-        {# {{ category_form.as_p }} #}
+<section style="background-color: #eee;">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6 col-xl-6">
+        <div class="card" style="border-radius: 15px;">
+          <div class="d-flex justify-content-between">
+            <form class="card-body pb-0" action="{% url 'auctions:new_list' %}" method="post">
+              {% csrf_token %}
+              {{ list_form.as_p }}
+          </div>
+          <div>
+            <div class="card-body pb-0">
+              <div class="d-flex justify-content-between align-items-center pb-2 mb-1">
+                <a href="{% url 'auctions:index' %}" class="text-dark fw-bold">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </div>
+            </form>
+          </div>
+        </div>
       </div>
-    <div>
-      <button type="submit" class="btn btn-outline-primary">Save</button>
     </div>
-  </form>
-</div>
+  </div>
+</section>
 {% endblock %}
-{# TODO: pre-made all the categories and add it as <option> #}
+
+{# <div style="display: flex; align-items: center; flex-direction: column;"> #}
+  {# <form class="form-container" action="{% url 'auctions:new_list' %}" method="post" #} {#
+    style=" display: flex; flex-direction: column; align-items: center; width: 80%;"> #}
+    {# <center> #}
+      {#
+      <hr> #}
+      {# <h1>Create new list</h1> #}
+      {#
+      <hr> #}
+      {# <br> #}
+      {#
+    </center> #}
+    {# <input type="hidden" name="user_id" value="{{ user.id }}"> #}
+    {# {% csrf_token %} #}
+    {# <div style="width: 80%;"> #}
+      {# {{ list_form.as_p }} #}
+      {# </div> #}
+    {# <div> #}
+      {# <button type="submit" class="btn btn-outline-primary">Save</button> #}
+      {# </div> #}
+    {# </form> #}
+  {# </div> #}
+{# {# TODO: pre-made all the categories and add it as <option> #} #}

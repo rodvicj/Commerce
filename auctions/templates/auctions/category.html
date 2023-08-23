@@ -1,31 +1,42 @@
 {% extends "auctions/base.html" %}
 
 {% load static %}
+
 {% block styles %}
 <link href="{% static 'auctions/index.css' %}" rel="stylesheet">
+<link href="{% static 'auctions/listing.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-<center>
-  <hr>
-  <h1>Categories</h1>
-  <hr><br>
-</center>
-<div class="category-container">
-  <div class="category-body-container">
-    {% for list in lists %}
-    <div>
-      <ul>
-        <li>
-          <a href="{% url 'auctions:view_by_category_name' list %}" class="listing_link"> {{ list }}</a>
-          {# <a href="{% url 'auctions:view_by_category_name' list.name %}" class="listing_link"> {{ list.name }}</a> #}
-          {# <p>{{list}}</p> #}
-        </li>
-      </ul>
+<section class="section-products">
+  <div class="container">
+    <div class="row justify-content-center text-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="header">
+          <h3>Featured Product</h3>
+          <h2>Popular Products</h2>
+        </div>
+      </div>
     </div>
-    {% empty %}
-    <h6>currently no listings available</h6>
-    {% endfor %}
+    <div class="row">
+      {% for list in lists %}
+      <!-- Single Product -->
+      <div class="col-md-6 col-lg-4 col-xl-3" style="cursor: pointer;" onclick='location.href="{% url 'auctions:view_by_category_name' list %}";'>
+        <div id="category-1" class="single-product">
+            <h3 class="product-title" >{{ list }}</h3>
+            <div class="part-1 fal fa-image"></div>
+        </div>
+      </div>
+      {% empty %}
+      <h3>There's no active listing</h3>
+      {% endfor %}
+    </div>
   </div>
-</div>
+</section>
 {% endblock %}
+
+          {# <div class="part-1" style=" background: url(https://static.thenounproject.com/png/5405076-200.png) #}
+          {# <div class="part-1" style=" background: #}
+          {#   url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsNGGjrfSqqv8UjL18xS4YypbK-q7po_8oVQ&usqp=CAU) #}
+          {#   no-repeat center; background-size: cover; transition: all 0.3s; "> #}
+          {# </div> #}

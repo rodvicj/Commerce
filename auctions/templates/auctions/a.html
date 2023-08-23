@@ -25,3 +25,27 @@
   </div>
 </a>
 
+
+
+{# <center> #}
+{#   <hr> #}
+{#   <h1>Categories</h1> #}
+{#   <hr><br> #}
+{# </center> #}
+{# <div class="category-container"> #}
+{#   <div class="category-body-container"> #}
+{#     {% for list in lists %} #}
+{#     <div> #}
+{#       <ul> #}
+{#         <li> #}
+{#           <a href="{% url 'auctions:view_by_category_name' list %}" class="listing_link"> {{ list }}</a> #}
+{#           {# <a href="{% url 'auctions:view_by_category_name' list.name %}" class="listing_link"> {{ list.name }}</a> #} #}
+{#           {# <p>{{list}}</p> #} #}
+{#         </li> #}
+{#       </ul> #}
+{#     </div> #}
+{#     {% empty %} #}
+{#     <h6>currently no listings available</h6> #}
+{#     {% endfor %} #}
+{#   </div> #}
+{# </div> #}

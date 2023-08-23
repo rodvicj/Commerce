@@ -28,13 +28,13 @@
     <ul class="nav">
       {% if user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:index' %}">All products</a>
+        <a class="nav-link" href="{% url 'auctions:index' %}">Products</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'auctions:display_products' %}">Your products</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:new_list' %}">Add product</a>
+        <a class="nav-link" href="{% url 'auctions:new_list' %}">New</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'auctions:view_watchlist' %}">Watchlists</a>
