@@ -16,9 +16,7 @@ class ListForm(forms.ModelForm):
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "description": forms.TextInput(attrs={"class": "form-control"}),
-            "image_url": forms.URLInput(
-                attrs={"class": "form-control", "placeholder": "https://www.image.com"}
-            ),
+            "image_url": forms.URLInput(attrs={"class": "form-control", "placeholder": "https://www.image.com"}),
             "category": forms.Select(attrs={"class": "form-control"}),
             "amount": forms.NumberInput(attrs={"class": "form-control"}),
         }
@@ -40,7 +38,7 @@ class CartForm(forms.ModelForm):
                 # "value": 1,
                 "min": 1,
                 "max": max_value,
-                "class": "form-control",
+                "class": "form-control d-flex justify-content-between",
             },
         )
         self.fields["quantity"].validators = [
@@ -48,7 +46,7 @@ class CartForm(forms.ModelForm):
             MaxValueValidator(max_value),
         ]
 
-        self.fields["quantity"].error_messages = {"min_value": "Please enter your name"}
+        # self.fields["quantity"].widgets = {"min_value": "Please enter your name"}
 
         # self.fields["quantity"].error_messages = {"min_value": _("hi there")}
 
