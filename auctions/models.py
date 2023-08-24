@@ -1,6 +1,7 @@
+from datetime import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from datetime import datetime
 
 
 class User(AbstractUser):
@@ -15,9 +16,7 @@ class Product(models.Model):
         ("home", "Home"),
         ("others", "Others"),
     )
-    user = models.ForeignKey(
-        User, blank=False, on_delete=models.CASCADE, related_name="lists"
-    )
+    user = models.ForeignKey(User, blank=False, on_delete=models.CASCADE, related_name="lists")
     title = models.CharField(blank=False, max_length=128)
     date = models.DateTimeField(default=datetime.now, blank=True)
     quantity = models.PositiveIntegerField(blank=False, default=1)

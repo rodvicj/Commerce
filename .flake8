@@ -1,5 +1,5 @@
 [flake8]
-ignore = E501, E203
+ignore = E501, E203, C101
 exclude =
     **/migrations/*,
     .git,
@@ -8,7 +8,7 @@ exclude =
     .venv
 filename = *.py
 accept-encodings = utf-8
-inline-quotes = single
+inline-quotes = double
 max-complexity = 12
 max-linenumber = 500
 max-line-length = 119

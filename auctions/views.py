@@ -1,17 +1,13 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect  # , HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-from django.contrib import messages
 
-# from django.contrib import messages
-# from django.core.exceptions import ValidationError
-# from django.utils.translation import gettext_lazy as _
-
-from .forms import ListForm, CartForm
-from .models import User, Product, Cart
+from .forms import CartForm, ListForm
+from .models import Cart, Product, User
 
 
 def index(request):
@@ -97,15 +93,15 @@ def new_list(request):
         # user = request.user.id
         list_form = ListForm(request.POST)
         # category_form = CategoryForm(request.POST)
-        list = Product()
+        item = Product()
 
         if list_form.is_valid():
-            list.title = list_form.cleaned_data["title"]
-            list.category = list_form.cleaned_data["category"]
-            list.description = list_form.cleaned_data["description"]
-            list.image_url = list_form.cleaned_data["image_url"]
-            list.amount = list_form.cleaned_data["amount"]
-            list.user = user
+            item.title = list_form.cleaned_data["title"]
+            item.category = list_form.cleaned_data["category"]
+            item.description = list_form.cleaned_data["description"]
+            item.image_url = list_form.cleaned_data["image_url"]
+            item.amount = list_form.cleaned_data["amount"]
+            item.user = user
             # newList.category = newCategory
 
             # if category_form.is_valid():
@@ -126,9 +122,9 @@ def new_list(request):
             #             # new_category.save()
             #             list.category = new_category
 
-            list.save()
+            item.save()
 
-        return HttpResponseRedirect(reverse("auctions:product_info", args=(list.id,)))
+        return HttpResponseRedirect(reverse("auctions:product_info", args=(item.id,)))
     else:
         return render(
             request,
@@ -175,30 +171,30 @@ def new_list(request):
 def add_watchlist(request):
     if request.method == "POST":
         user = User.objects.get(id=request.user.id)
-        id = int(request.POST["list_id"])
-        list = Product.objects.get(pk=id)
+        list_id = int(request.POST["list_id"])
+        item = Product.objects.get(pk=list_id)
         watchlists = user.watchlists.all()
 
-        if list not in watchlists:
-            list.watchlist.add(user)
-            list.save()
+        if item not in watchlists:
+            item.watchlist.add(user)
+            item.save()
 
-        return HttpResponseRedirect(reverse("auctions:product_info", args=(id,)))
+        return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
 
 
 @login_required(login_url="auctions:login")
 def remove_watchlist(request):
     if request.method == "POST":
         user = User.objects.get(id=request.user.id)
-        id = int(request.POST["list_id"])
-        list = Product.objects.get(pk=id)
+        list_id = int(request.POST["list_id"])
+        item = Product.objects.get(pk=list_id)
         watchlists = user.watchlists.all()
 
-        if list in watchlists:
-            list.watchlist.remove(user)
-            list.save()
+        if item in watchlists:
+            item.watchlist.remove(user)
+            item.save()
 
-        return HttpResponseRedirect(reverse("auctions:product_info", args=(id,)))
+        return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
 
 
 # @login_required(login_url="auctions:login")
@@ -252,7 +248,10 @@ def view_watchlist(request):
         # TODO: create seperate html file for view_watchlist
         request,
         "auctions/index.html",
-        {"lists": watchlists, "heading": "Watchlists"},
+        {
+            "lists": watchlists,
+            "heading": "Watchlists"
+        },
     )
 
 
@@ -282,7 +281,10 @@ def view_by_category_name(request, category_name):
         # TODO: create seperate html file for view_by_category_name
         request,
         "auctions/products.html",
-        {"lists": lists, "heading": category_name},
+        {
+            "lists": lists,
+            "heading": category_name
+        },
     )
 
 
@@ -327,18 +329,18 @@ def display_products(request):
 
 
 @login_required(login_url="auctions:login")
-def product_info(request, list_id):
+def product_info(request, item):
     if request.user.id:
         # users = User.objects.all()
         user = User.objects.get(id=request.user.id)
 
         # if user in users:
-        list = Product.objects.get(pk=list_id)
+        item = Product.objects.get(pk=item)
 
         context = {
-            "list": list,
-            "watchlist": list in user.watchlists.all(),
-            "cartForm": CartForm(max_value=list.quantity),
+            "list": item,
+            "watchlist": item in user.watchlists.all(),
+            "cartForm": CartForm(max_value=item.quantity),
         }
 
         return render(request, "auctions/product_info1.html", context)
@@ -368,9 +370,7 @@ def add_to_cart(request):
         cart = CartForm(request.POST, max_value=item.quantity)
 
         if cart.is_valid():
-            cart = Cart.objects.create(
-                buyer=request.user, quantity=quantity, product=item
-            )
+            cart = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
 
             return HttpResponseRedirect(reverse("auctions:index"))
 
@@ -382,6 +382,4 @@ def add_to_cart(request):
                 messages.error(request, "Invalid quantity")
             elif quantity > 5:
                 messages.info(request, "Maximum item you can add to cart is quanity")
-            return HttpResponseRedirect(
-                reverse("auctions:product_info", args=(list_id,))
-            )
+            return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))

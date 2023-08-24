@@ -13,8 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="cart",
             name="quantity",
-            field=models.PositiveIntegerField(
-                default=1, validators=[django.core.validators.MinValueValidator(1)]
-            ),
+            field=models.PositiveIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1)]),
         ),
     ]

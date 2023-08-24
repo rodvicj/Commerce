@@ -7,11 +7,11 @@
   <title>{% block title %}Auctions{% endblock %}</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="{% static 'auctions/listing.css' %}" rel="stylesheet">
+  <link href="{% static 'auctions/index.css' %}" rel="stylesheet">
   <script src="{% static 'fontawesomefree/js/fontawesome.js' %}"></script>
   <script src="{% static 'fontawesomefree/js/solid.js' %}"></script>
   <script src="{% static 'fontawesomefree/js/brands.js' %}"></script>
-  {% block styles%}
-  {% endblock %}
 </head>
 
 <body>
@@ -34,7 +34,7 @@
         <a class="nav-link" href="{% url 'auctions:display_products' %}">Your products</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:new_list' %}">New</a>
+        <a class="nav-link" href="{% url 'auctions:new_list' %}">Add Product</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'auctions:view_watchlist' %}">Watchlists</a>

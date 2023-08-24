@@ -13,6 +13,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='category1',
-            field=models.CharField(choices=[('fasion', 'Fashion'), ('toys', 'Toys'), ('electronics', 'Electronics'), ('home', 'Home'), ('others', 'Others')], max_length=128, null=True),
+            field=models.CharField(
+                choices=[('fasion', 'Fashion'), ('toys', 'Toys'), ('electronics', 'Electronics'), ('home', 'Home'),
+                         ('others', 'Others')],
+                max_length=128,
+                null=True
+            ),
         ),
     ]
