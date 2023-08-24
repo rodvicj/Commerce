@@ -247,11 +247,15 @@ def view_watchlist(request):
     return render(
         # TODO: create seperate html file for view_watchlist
         request,
-        "auctions/index.html",
+        "auctions/products.html",
         {
             "lists": watchlists,
-            "heading": "Watchlists"
         },
+        # "auctions/index.html",
+        # {
+        #     "lists": watchlists,
+        #     "heading": "Watchlists"
+        # },
     )
 
 
@@ -329,13 +333,13 @@ def display_products(request):
 
 
 @login_required(login_url="auctions:login")
-def product_info(request, item):
+def product_info(request, list_id):
     if request.user.id:
         # users = User.objects.all()
         user = User.objects.get(id=request.user.id)
 
         # if user in users:
-        item = Product.objects.get(pk=item)
+        item = Product.objects.get(pk=list_id)
 
         context = {
             "list": item,
