@@ -20,7 +20,14 @@
             no-repeat center; background-size: cover; transition: all 0.3s; ">
             <ul>
               <li><a href="{% url 'auctions:product_info' list.id %}"><i class="fas fa-shopping-cart"></i></a></li>
-              <li><a href="#"><i class="fas fa-heart"></i></a></li>
+              <form>
+                <input name="watchlist" method="post" action="{% url 'auctions:add_watchlist' %}">
+                  <input type="hidden" name="list_id" value="{{ list.id }}" />
+                  {% csrf_token %}
+                  {# <input class="btn btn-secondary" type="submit"/> #}
+                  {# <a href="" type="submit"><i class="fas fa-heart" type="submit"></i></a> #}
+                  <input type="submit"><i class="fas fa-heart"></i></input>
+              </form>
               <li><a href="#"><i class="fas fa-plus"></i></a></li>
               <li><a href="#"><i class="fas fa-expand"></i></a></li>
             </ul>

@@ -27,10 +27,7 @@
     <ul class="nav">
       {% if user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:index' %}">Products</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:display_products' %}">Your products</a>
+        <a class="nav-link" href="{% url 'auctions:index' %}">All Products</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'auctions:new_list' %}">Add Product</a>
@@ -41,9 +38,15 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'auctions:view_category' %}">Categories</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'auctions:cart' %}">Cart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'auctions:display_products' %}">Your products</a>
+      </li>
       {% else %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:index' %}">Active Listings</a>
+        <a class="nav-link" href="{% url 'auctions:index' %}">All Products</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'auctions:view_category' %}">Categories</a>
