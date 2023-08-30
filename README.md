@@ -38,8 +38,8 @@ $PROJECT_ROOT
 
 ## TODO
 
-* add (Fashion, Toys, Electronics, Home, etc.) to category
+* add (Fashion, Toys, Electronics, Home, etc.) to category (done)
 
 ## About
 
-This is my implementation of the CS50W project 2 called [commerce](https://cs50.harvard.edu/web/2020/projects/2/commerce/).
+A commerce website with some basic functionalities including but not limited to display products, add a product, add to cart, add to wishlist, view by category.
