@@ -4,7 +4,7 @@ services:
   web:
     build: .
     volumes:
-      - .:/usr/src/app
+     - .:/usr/src/app
     ports:
         - "8000:8000"
 

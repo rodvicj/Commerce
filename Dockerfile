@@ -11,7 +11,7 @@ RUN set -xe \
     && apt-get update \
     && apt-get install -y --no-install-recommends build-essential \
     && pip install virtualenvwrapper poetry==1.5.1 \
-    && apt-get autoremove python -y\
+    # && apt-get autoremove python -y\
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -20,19 +20,21 @@ RUN set -xe \
 COPY ["poetry.lock", "pyproject.toml", "./"]
 RUN poetry install --no-root
 
-COPY ["README.md", "Makefile", "./"]
+COPY ["README.md", "Makefile", "auctions", "commerce", "manage.py", "./"]
+# COPY auctions /usr/src/app
+# COPY commerce /usr/src/app
+# COPY auctions /usr/src/app
 # COPY commerce commerce
-COPY .  /usr/src/app
 
 # EXPOSE 8000
 
 
-COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod a+x /entrypoint.sh
+# COPY scripts/entrypoint.sh /entrypoint.sh
+# RUN chmod a+x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+# ENTRYPOINT ["/entrypoint.sh"]
 
-# CMD ["make", "runserver", "0.0.0.0:8000"]
+CMD ["poetry", "run", "python3", "runserver", "0.0.0.0:8000"]
 
 # FROM python:3
 # WORKDIR /usr/src/app

@@ -347,7 +347,7 @@ def product_info(request, list_id):
             "cartForm": CartForm(max_value=item.quantity),
         }
 
-        return render(request, "auctions/product_info1.html", context)
+        return render(request, "auctions/product_info.html", context)
     # else:
     #     list = Product.objects.get(pk=list_id)
     #     return render(
@@ -374,9 +374,11 @@ def add_to_cart(request):
         cart = CartForm(request.POST, max_value=item.quantity)
 
         if cart.is_valid():
-            cart = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
+            item = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
 
-            return HttpResponseRedirect(reverse("auctions:index"))
+            # return HttpResponseRedirect(reverse("auctions:index"))
+            # TODO: show cart icon and add show a number that indicates how many products are in the cart
+            return HttpResponseRedirect(reverse("auctions:product_info", args=(item.product.id,)))
 
         else:
             # TODO: add messages.info
@@ -387,3 +389,11 @@ def add_to_cart(request):
             elif quantity > 5:
                 messages.info(request, "Maximum item you can add to cart is quanity")
             return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
+
+
+@login_required(login_url="auctions:login")
+def cart(request):
+    return render(
+        request,
+        "auctions/cart.html",
+    )

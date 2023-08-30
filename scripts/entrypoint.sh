@@ -20,6 +20,6 @@ echo 'which python'
 which python
 
 # exec ls -a
-exec poetry run python manage.py runserver -p 8000 -b 0.0.0.0
+# exec poetry run python manage.py runserver 0.0.0.0:8000
 # exec poetry run daphne thenewboston.project.asgi:application -p 8000 -b 0.0.0.0
 # poetry run python manage.py runserver -p 8000 -b 0.0.0.0
