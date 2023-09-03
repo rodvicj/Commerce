@@ -179,7 +179,8 @@ def add_watchlist(request):
             item.watchlist.add(user)
             item.save()
 
-        return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
+        # return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
+        return HttpResponseRedirect(reverse("auctions:index"))
 
 
 @login_required(login_url="auctions:login")
@@ -194,7 +195,8 @@ def remove_watchlist(request):
             item.watchlist.remove(user)
             item.save()
 
-        return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
+        # return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
+        return HttpResponseRedirect(reverse("auctions:index"))
 
 
 # @login_required(login_url="auctions:login")
@@ -307,12 +309,15 @@ def view_by_category_name(request, category_name):
 def display_products(request):
     # products = Product.objects.exclude(active=False).all()
     products = Product.objects.filter(user=request.user).all()
+    watchlists = (request.user.watchlists.all(),)
+    watchlists = list(watchlists)
 
     return render(
         request,
         "auctions/products.html",
         {
             "lists": products,
+            "watchlists": watchlists
         },
     )
 
