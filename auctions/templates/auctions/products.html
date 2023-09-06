@@ -22,16 +22,21 @@
             <ul>
               <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
               <li>
-                  {% if list|in_watchlist:request.user %}
-                  <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:remove_watchlist' %}">
-                    <input type="hidden" name="list_id" value="{{ list.id }}" />
-                    {% csrf_token %}
-                    <a onclick="this.parentNode.submit();"><i class="fas fa-heart" style="color: red"></i></a>
+                  {% if user.is_authenticated %}
+                    {% if list|in_watchlist:request.user %}
+                    <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:remove_watchlist' %}">
+                      <input type="hidden" name="list_id" value="{{ list.id }}" />
+                      {% csrf_token %}
+                      <a onclick="this.parentNode.submit();"><i class="fas fa-heart" style="color: red"></i></a>
+                    {% else %}
+                    <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:add_watchlist' %}">
+                      <input type="hidden" name="list_id" value="{{ list.id }}" />
+                      {% csrf_token %}
+                      <a onclick="this.parentNode.submit();"><i class="fas fa-heart"></i></a>
+                    {% endif %}
+
                   {% else %}
-                  <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:add_watchlist' %}">
-                    <input type="hidden" name="list_id" value="{{ list.id }}" />
-                    {% csrf_token %}
-                    <a onclick="this.parentNode.submit();"><i class="fas fa-heart"></i></a>
+                    <a><i class="fas fa-heart"></i></a>
                   {% endif %}
                 </form>
               </li>

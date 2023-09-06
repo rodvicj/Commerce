@@ -337,13 +337,10 @@ def display_products(request):
 #
 
 
-@login_required(login_url="auctions:login")
+# @login_required(login_url="auctions:login")
 def product_info(request, list_id):
     if request.user.id:
-        # users = User.objects.all()
         user = User.objects.get(id=request.user.id)
-
-        # if user in users:
         item = Product.objects.get(pk=list_id)
 
         context = {
@@ -353,13 +350,9 @@ def product_info(request, list_id):
         }
 
         return render(request, "auctions/product_info.html", context)
-    # else:
-    #     list = Product.objects.get(pk=list_id)
-    #     return render(
-    #         request,
-    #         "auctions/product_info.html",
-    #         {"list": list, "comments": list.comments.all().order_by("-date")},
-    #     )
+
+    else:
+        return render(request, "auctions/product_info.html", {"list": Product.objects.get(pk=list_id)})
 
 
 # TODO: add pagination to this web app
