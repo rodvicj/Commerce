@@ -1,5 +1,6 @@
 [] Use bootstrap with navbar
 <!-- Fixed add watchlists in products -->
+<!-- Re-create ecommerce using reactjs typescript -->
 
 
 Here are some possible Django models for a commerce website:

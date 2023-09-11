@@ -11,13 +11,11 @@ from .models import Cart, Product, User
 
 
 def index(request):
-    lists = Product.objects.all()
-
     return render(
         request,
         "auctions/products.html",
         {
-            "lists": lists,
+            "lists": Product.objects.all(),
         },
     )
 
@@ -369,23 +367,44 @@ def add_to_cart(request):
         list_id = int(request.POST["list_id"])
         quantity = int(request.POST["quantity"])
         item = Product.objects.get(pk=list_id)
-        cart = CartForm(request.POST, max_value=item.quantity)
+        max_quantity = item.quantity
+        cart = CartForm(request.POST, max_value=max_quantity)
 
         if cart.is_valid():
-            item = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
 
-            # return HttpResponseRedirect(reverse("auctions:index"))
-            # TODO: show cart icon and add show a number that indicates how many products are in the cart
+            # TODO: everytime a user add to cart something, check for all the users cart first then check if the current
+            # product the user's want to add is already one of the items in its cart
+            # else create new cart for that product
+
+            # get all current user's cart
+            carts = request.user.cart_products.all()
+
+            for cart in carts:
+                if item == cart.product:
+                    cart.quantity += quantity
+                    if cart.quantity > max_quantity:
+                        # change quantity to max supported
+                        cart.quantity = item.quantity
+                        cart.save()
+                        messages.info(request, f"Maximum quantity for this item is {max_quantity}")
+                        return HttpResponseRedirect(reverse("auctions:product_info", args=(cart.product.pk,)))
+
+                    else:
+                        cart.save()
+                        # messages.error(request, f"Maximum quantity for this item is {max_quantity}")
+                        return HttpResponseRedirect(reverse("auctions:product_info", args=(cart.product.pk,)))
+
+            # if already_in_cart:
+            #     # return HttpResponseRedirect(reverse("auctions:index"))
+            #     # TODO: show cart icon and add show a number that indicates how many products are in the cart
+            #     return HttpResponseRedirect(reverse("auctions:product_info", args=(product_id,)))
+            # else:
+
+            item = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
             return HttpResponseRedirect(reverse("auctions:product_info", args=(item.product.id,)))
 
         else:
-            # TODO: add messages.info
-            # messages.info(request, "You've won the auction!")
-
-            if quantity < 1:
-                messages.error(request, "Invalid quantity")
-            elif quantity > 5:
-                messages.info(request, "Maximum item you can add to cart is quanity")
+            messages.error(request, "Something went wrong")
             return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
 
 

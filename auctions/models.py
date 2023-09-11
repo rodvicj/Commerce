@@ -33,6 +33,7 @@ class Product(models.Model):
         return f"{self.title} - {self.user}"
 
 
+# NOTE: a user should only have 1 cart but can have multiple products
 class Cart(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_products")
     product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name="cart_products")
