@@ -27,3 +27,6 @@ Cart Model: Represents a customer's shopping cart. This model would include fiel
 Payment Model: Represents a customer's payment information for an order. This model would include fields such as the payment method, card details, and billing address.
 Review Model: Represents customer reviews and ratings for products. This model would have a foreign key relationship with the Product model and include fields such as the reviewer, rating, and comments.
 These are just some of the essential models you might need for a commerce website using Django. The specific models and their fields will depend on the requirements of your website. It's important to plan and design your models carefully to ensure they accurately represent the data and relationships in your e-commerce system.
+
+11/09/2023
+TODO: Work on cart.html
