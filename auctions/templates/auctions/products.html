@@ -20,7 +20,14 @@
           <div class="part-1" style=" background: url({{ list.image_url }})
             no-repeat center; background-size: cover; transition: all 0.3s; ">
             <ul>
-              <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+              <li>
+                <form name="add_to_cart_form" method="post" action="{% url 'auctions:add_to_cart' %}">
+                  <input type="hidden" name="list_id" value="{{ list.id }}" />
+                  <input type="hidden" name="quantity" value="1" />
+                  {% csrf_token %}
+                  <a onclick="this.parentNode.submit();"><i class="fas fa-shopping-cart"></i></a>
+                </form>
+              </li>
               <li>
                   {% if user.is_authenticated %}
                     {% if list|in_watchlist:request.user %}

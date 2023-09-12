@@ -350,7 +350,11 @@ def product_info(request, list_id):
         return render(request, "auctions/product_info.html", context)
 
     else:
-        return render(request, "auctions/product_info.html", {"list": Product.objects.get(pk=list_id)})
+        return render(
+            request,
+            "auctions/product_info.html",
+            {"list": Product.objects.get(pk=list_id)},
+        )
 
 
 # TODO: add pagination to this web app
@@ -371,7 +375,6 @@ def add_to_cart(request):
         cart = CartForm(request.POST, max_value=max_quantity)
 
         if cart.is_valid():
-
             # TODO: everytime a user add to cart something, check for all the users cart first then check if the current
             # product the user's want to add is already one of the items in its cart
             # else create new cart for that product
@@ -386,13 +389,18 @@ def add_to_cart(request):
                         # change quantity to max supported
                         cart.quantity = item.quantity
                         cart.save()
+
+                        # TODO: clear messages.info first before providing new string
+                        messages.get_messages(request).used = True
+
                         messages.info(request, f"Maximum quantity for this item is {max_quantity}")
                         return HttpResponseRedirect(reverse("auctions:product_info", args=(cart.product.pk,)))
+                        # return HttpResponseRedirect(reverse("auctions:cart"))
 
                     else:
                         cart.save()
-                        # messages.error(request, f"Maximum quantity for this item is {max_quantity}")
                         return HttpResponseRedirect(reverse("auctions:product_info", args=(cart.product.pk,)))
+                        # return HttpResponseRedirect(reverse("auctions:cart"))
 
             # if already_in_cart:
             #     # return HttpResponseRedirect(reverse("auctions:index"))
@@ -401,16 +409,16 @@ def add_to_cart(request):
             # else:
 
             item = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
-            return HttpResponseRedirect(reverse("auctions:product_info", args=(item.product.id,)))
+            # return HttpResponseRedirect(reverse("auctions:product_info", args=(item.product.id,)))
+            return HttpResponseRedirect(reverse("auctions:cart"))
 
         else:
+
+            messages.get_messages(request).used = True
             messages.error(request, "Something went wrong")
             return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
 
 
 @login_required(login_url="auctions:login")
 def cart(request):
-    return render(
-        request,
-        "auctions/cart.html",
-    )
+    return render(request, "auctions/cart.html", {"carts": request.user.cart_products.all()})
