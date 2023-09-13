@@ -30,5 +30,9 @@ shell:
 superuser:
 	poetry run python manage.py createsuperuser
 
+.PHONY: export
+export:
+	poetry export --without-hashes --format=requirements.txt > requirements.txt
+
 .PHONY: update
 update: install migrate install-pre-commit ;
