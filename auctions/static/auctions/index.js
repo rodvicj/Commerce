@@ -1,22 +1,26 @@
-document.addEventListener("DOMContentLoaded", function() {
-  document.querySelector('select').onchange = () => {
-    // document.querySelector("#hello").style.color = this.value;
-    console.log(`this value: ${this.value}`);
+document.addEventListener("DOMContentLoaded", () => {
+  // document.querySelector("select").onchange = function () {
+  //   console.log(`this.value ${this.value}`);
+  //   document.querySelector("#hello").style.color = this.value;
+  //   color();
+  // };
 
-    // document.querySelector("#hello").style.color = "red";
-    return false;
-  }
-
+  document.querySelector("select").onchange = color;
 });
 
-  // const buttons = document.querySelectorAll(".nv")
-  // // const buttons = Array.prototype.slice.call(btns);
-  // buttons.forEach((button) => {
-  //   button.onclick = () => {
-  //     this.value = "nv nav-link active";
-  //     // console.log(`this ${this.value}`);
-  //     // alert(`hey you clicked me ${y}`);
-  //     // y.className = "nv nav-link active";
-  //     return false;
-  //   }
-  // })
+function color() {
+// const color = (this) => {
+  document.querySelector("#hello").style.color = this.value;
+  console.log(`this.value ${this.value}`);
+  return false;
+};
+//   document.querySelector("#hello").style.color = this.value;
+// }
+
+// document.querySelector('#compose').onclick = compose_email;
+
+// // function for sending an email
+// document.querySelector('#compose-form').onsubmit = function() {
+//   send_mail();
+//   return false;
+// };

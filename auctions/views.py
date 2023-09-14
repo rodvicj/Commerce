@@ -13,6 +13,7 @@ from .models import Cart, Product, User
 def index(request):
     return render(
         request,
+        # "auctions/new1.html",
         "auctions/products.html",
         {
             "lists": Product.objects.all(),
