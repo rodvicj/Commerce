@@ -2,6 +2,10 @@
 install:
 	poetry install
 
+.PHONY: poetry-update
+poetry-update:
+	poetry update
+
 .PHONY: makemigrations
 makemigrations:
 	poetry run python manage.py makemigrations
