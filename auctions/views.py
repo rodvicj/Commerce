@@ -13,7 +13,6 @@ from .models import Cart, Product, User
 def index(request):
     return render(
         request,
-        # "auctions/new1.html",
         "auctions/products.html",
         {
             "lists": Product.objects.all(),
@@ -265,9 +264,11 @@ def view_category(request):
     choices = Product.choices
     # categories = Product.objects.all()
     categories = []
+
     for choice in choices:
         categories.append(choice[1])
     # choices = categories.field.choices
+
     return render(
         request,
         "auctions/category.html",
@@ -414,7 +415,6 @@ def add_to_cart(request):
             return HttpResponseRedirect(reverse("auctions:cart"))
 
         else:
-
             messages.get_messages(request).used = True
             messages.error(request, "Something went wrong")
             return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
