@@ -29,29 +29,31 @@
                 </form>
               </li>
               <li>
-                  {% if user.is_authenticated %}
-                    {% if list|in_watchlist:request.user %}
-                    <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:remove_watchlist' %}">
-                      <input type="hidden" name="list_id" value="{{ list.id }}" />
-                      {% csrf_token %}
-                      <a onclick="this.parentNode.submit();"><i class="fas fa-heart" style="color: red"></i></a>
-                    {% else %}
-                    <form class="watchlist-form" name="watchlist" method="post" action="{% url 'auctions:add_watchlist' %}">
-                      <input type="hidden" name="list_id" value="{{ list.id }}" />
-                      {% csrf_token %}
-                      <a onclick="this.parentNode.submit();"><i class="fas fa-heart"></i></a>
+                {% if user.is_authenticated %}
+                {% if list|in_watchlist:request.user %}
+                <form class="watchlist-form" name="watchlist" method="post"
+                  action="{% url 'auctions:remove_watchlist' %}">
+                  <input type="hidden" name="list_id" value="{{ list.id }}" />
+                  {% csrf_token %}
+                  <a onclick="this.parentNode.submit();"><i class="fas fa-heart" style="color: red"></i></a>
+                  {% else %}
+                  <form class="watchlist-form" name="watchlist" method="post"
+                    action="{% url 'auctions:add_watchlist' %}">
+                    <input type="hidden" name="list_id" value="{{ list.id }}" />
+                    {% csrf_token %}
+                    <a onclick="this.parentNode.submit();"><i class="fas fa-heart"></i></a>
                     {% endif %}
 
-                  {% else %}
+                    {% else %}
                     <a><i class="fas fa-heart"></i></a>
-                  {% endif %}
-                </form>
+                    {% endif %}
+                  </form>
               </li>
               <li><a href="{% url 'auctions:product_info' list.id %}"><i class="fas fa-expand"></i></a></li>
             </ul>
           </div>
           <div class="part-2">
-            <h3 class="product-title" >{{ list.title }}</h3>
+            <h3 class="product-title">{{ list.title }}</h3>
             <h4 class="product-old-price">{{ list.description | slice:":80" }}</h4>
             <h4 class="product-price">${{ list.amount }}</h4>
           </div>
@@ -65,5 +67,6 @@
 </section>
 {% endblock %}
 
-{# <div class="col-md-6 col-lg-4 col-xl-3" style="cursor: pointer;" onclick='location.href="{% url 'auctions:product_info' list.id %}";'> #}
-{# <li><a href="#"><i class="fas fa-heart"></i></a></li> #}
+{# <div class="col-md-6 col-lg-4 col-xl-3" style="cursor: pointer;" onclick='location.href="{% url '
+  auctions:product_info' list.id %}";'> #}
+  {# <li><a href="#"><i class="fas fa-heart"></i></a></li> #}

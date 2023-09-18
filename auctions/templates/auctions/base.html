@@ -30,24 +30,20 @@
 
 
   {# <div> #}
-  {#   {% if user.is_authenticated %} #}
-  {#   Signed in as <strong>{{ user.username }}</strong>. #}
-  {#   <a href="{% url 'auctions:logout' %}">Log Out</a> #}
-  {#   {% else %} #}
-  {#   Not signed in. #}
-  {#   {% endif %} #}
-  {# </div> #}
-
-
-
-
-
+    {# {% if user.is_authenticated %} #}
+    {# Signed in as <strong>{{ user.username }}</strong>. #}
+    {# <a href="{% url 'auctions:logout' %}">Log Out</a> #}
+    {# {% else %} #}
+    {# Not signed in. #}
+    {# {% endif %} #}
+    {# </div> #}
 
   <div class="container">
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
         <a class="nv navbar-brand" href="{% url 'auctions:index' %}">Commerce</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -60,11 +56,14 @@
               <a class="nv nav-link active" href="{% url 'auctions:view_category' %}">Categories</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nv nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ user.username }} </a>
+              <a class="nv nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">{{ user.username }} </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{% url 'auctions:view_watchlist' %}">Wishlists</a></li>
                 <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
                 <li><a class="dropdown-item" href="{% url 'auctions:logout' %}">Logout</a></li>
               </ul>
             </li>

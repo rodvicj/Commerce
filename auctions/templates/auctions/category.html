@@ -14,10 +14,11 @@
     <div class="row">
       {% for list in lists %}
       <!-- Single Product -->
-      <div class="col-md-6 col-lg-4 col-xl-3" style="cursor: pointer;" onclick='location.href="{% url 'auctions:view_by_category_name' list %}";'>
+      <div class="col-md-6 col-lg-4 col-xl-3" style="cursor: pointer;" onclick='location.href="{% url '
+        auctions:view_by_category_name' list %}";'>
         <div id="category-1" class="single-product">
-            <h3 class="product-title" >{{ list }}</h3>
-            <div class="part-1 fal fa-image"></div>
+          <h3 class="product-title">{{ list }}</h3>
+          <div class="part-1 fal fa-image"></div>
         </div>
       </div>
       {% empty %}
@@ -28,8 +29,8 @@
 </section>
 {% endblock %}
 
-          {# <div class="part-1" style=" background: url(https://static.thenounproject.com/png/5405076-200.png) #}
-          {# <div class="part-1" style=" background: #}
-          {#   url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsNGGjrfSqqv8UjL18xS4YypbK-q7po_8oVQ&usqp=CAU) #}
-          {#   no-repeat center; background-size: cover; transition: all 0.3s; "> #}
-          {# </div> #}
+{# <div class="part-1" style=" background: url(https://static.thenounproject.com/png/5405076-200.png) #}
+{# <div class=" part-1" style=" background: #}
+{#   url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsNGGjrfSqqv8UjL18xS4YypbK-q7po_8oVQ&usqp=CAU) #}
+{#   no-repeat center; background-size: cover; transition: all 0.3s; "> #}
+  {# </div> #}

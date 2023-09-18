@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelector("select").onchange = color;
+  const buttons = document.querySelectorAll(".nv");
+  buttons.forEach((button) => {
+    button.onclick = function () {
+      console.log(this.className);
+      // this.className + "active";
+      return false;
+    };
+  });
 });
-
-function color() {
-  document.querySelector("#hello").style.color = this.value;
-  console.log(`this.value ${this.value}`);
-  return false;
-};

@@ -8,12 +8,12 @@ ENV PYTHONUNBUFFERED 1
 # ENV THENEWBOSTON_SETTING_IN_DOCKER true
 
 RUN set -xe \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends build-essential \
-    && pip install virtualenvwrapper poetry==1.5.1 \
-    # && apt-get autoremove python -y\
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+  && apt-get update \
+  && apt-get install -y --no-install-recommends build-essential \
+  && pip install virtualenvwrapper poetry==1.5.1 \
+  # && apt-get autoremove python -y\
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # RUN curl -sSL https://install.python-poetry.org | python3 -
 

@@ -1,21 +1,18 @@
 {% extends "auctions/base.html" %}
-
 {% block body %}
 <section style="background-color: #eee;">
   <div class="container py-5">
-
-  <div>
-    {% if messages %}
-    {% for message in messages %}
-    <center>
-      <div>
-        <span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
-      </div>
-    </center>
-    {% endfor %}
-    {% endif %}
-  </div>
-
+    <div>
+      {% if messages %}
+      {% for message in messages %}
+      <center>
+        <div>
+          <span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
+        </div>
+      </center>
+      {% endfor %}
+      {% endif %}
+    </div>
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6 col-xl-4">
         <div class="card" style="border-radius: 15px;">
