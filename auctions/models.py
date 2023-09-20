@@ -27,7 +27,7 @@ class Product(models.Model):
     image_url = models.URLField(blank=True)
     # TODO: change this add watchlist to add to cart and change watchlist html
     # to View cart instead;
-    watchlist = models.ManyToManyField(User, blank=True, related_name="watchlists")
+    wishlists = models.ManyToManyField(User, blank=True, related_name="wishlists")
 
     def __str__(self):
         return f"{self.title} - {self.user}"

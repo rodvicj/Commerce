@@ -4,9 +4,9 @@ register = template.Library()
 
 
 @register.filter
-def in_watchlist(product, user):
-    if watchlists := user.watchlists.all():
-        return product in watchlists
+def in_wishlist(product, user):
+    if wishlists := user.wishlists.all():
+        return product in wishlists
     else:
         return False
     # try:

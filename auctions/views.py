@@ -132,49 +132,16 @@ def new_list(request):
         )
 
 
-# def listing(request, list_id):
-#     if request.user.id:
-#         users = User.objects.all()
-#         user = User.objects.get(id=request.user.id)
-
-#         if user in users:
-#             list = Product.objects.get(pk=list_id)
-
-#             # if list.current_bid:
-#             #     if not list.active and list.current_bid.user == user:
-#             #         messages.info(request, "You've won the auction!")
-
-#             context = {
-#                 "list": list,
-#                 "watchlist": listin user.watchlists.all(),
-#                 "comments": list.comments.all().order_by("-date"),
-#                 "commentForm": CommentForm(),
-#             }
-
-#             # if list.active:
-#             # context["bid_form"] = BidForm()
-#             # context["close"] = True if list.user == user else False
-
-#             return render(request, "auctions/product_info.html", context)
-#     else:
-#         list = Product.objects.get(pk=list_id)
-#         return render(
-#             request,
-#             "auctions/product_info.html",
-#             {"list": list, "comments": list.comments.all().order_by("-date")},
-#         )
-
-
 @login_required(login_url="auctions:login")
-def add_watchlist(request):
+def add_wishlist(request):
     if request.method == "POST":
         user = User.objects.get(id=request.user.id)
         list_id = int(request.POST["list_id"])
         item = Product.objects.get(pk=list_id)
-        watchlists = user.watchlists.all()
+        wishlists = user.wishlists.all()
 
-        if item not in watchlists:
-            item.watchlist.add(user)
+        if item not in wishlists:
+            item.wishlists.add(user)
             item.save()
 
         # return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
@@ -182,80 +149,33 @@ def add_watchlist(request):
 
 
 @login_required(login_url="auctions:login")
-def remove_watchlist(request):
+def remove_wishlist(request):
     if request.method == "POST":
         user = User.objects.get(id=request.user.id)
         list_id = int(request.POST["list_id"])
         item = Product.objects.get(pk=list_id)
-        watchlists = user.watchlists.all()
+        wishlists = user.wishlists.all()
 
-        if item in watchlists:
-            item.watchlist.remove(user)
+        if item in wishlists:
+            item.wishlists.remove(user)
             item.save()
 
         # return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
         return HttpResponseRedirect(reverse("auctions:index"))
 
 
-# @login_required(login_url="auctions:login")
-# def bid(request):
-#     if request.method == "POST":
-#         list_id = int(request.POST["list_id"])
-#         list = Product.objects.get(pk=list_id)
-
-#         if not list.active:
-#             messages.error(
-#                 request, f"You cannot bid anymore, the auction is already closed!"
-#             )
-#             return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
-
-#         minAmount = (
-#             list.current_bid.amount + 1 if list.current_bid else list.amount
-#         )
-#         user_id = int(request.POST["user_id"])
-#         user = User.objects.get(id=user_id)
-#         bid_form = BidForm(request.POST)
-
-#         if bid_form.is_valid():
-#             amount = bid_form.cleaned_data["amount"]
-
-#             if amount >= minAmount:
-#                 current_bid = Bid(user=user, amount=amount)
-#                 current_bid.save()
-#                 list.current_bid = current_bid
-#                 list.save()
-#                 # messages.success(request, "Bid successful!")
-#                 return HttpResponseRedirect(
-#                     reverse("auctions:listing", args=(list_id,))
-#                 )
-
-#             else:
-#                 messages.error(request, f"Amount should be at least ${minAmount}")
-
-#                 return HttpResponseRedirect(
-#                     reverse("auctions:listing", args=(list_id,))
-#                 )
-#         else:
-#             return HttpResponseRedirect(reverse("auctions:listing", args=(list_id,)))
-
-
 @login_required(login_url="auctions:login")
-def view_watchlist(request):
+def view_wishlist(request):
     user = User.objects.get(id=request.user.id)
-    watchlists = user.watchlists.all()
+    wishlists = user.wishlists.all()
 
     return render(
         # TODO: create seperate html file for view_watchlist
         request,
         "auctions/products.html",
         {
-            "lists": watchlists,
+            "lists": wishlists,
         },
-        # "auctions/index.html",
-        # {
-        #     "lists": watchlists,
-        #     "heading": "Watchlists"
-        # },
     )
 
 
@@ -309,15 +229,15 @@ def view_by_category_name(request, category_name):
 def display_products(request):
     # products = Product.objects.exclude(active=False).all()
     products = Product.objects.filter(user=request.user).all()
-    watchlists = (request.user.watchlists.all(),)
-    watchlists = list(watchlists)
+    wishlists = (request.user.wishlists.all(),)
+    wishlists = list(wishlists)
 
     return render(
         request,
         "auctions/products.html",
         {
             "lists": products,
-            "watchlists": watchlists
+            "wishlists": wishlists
         },
     )
 
@@ -345,7 +265,7 @@ def product_info(request, list_id):
 
         context = {
             "list": item,
-            "watchlist": item in user.watchlists.all(),
+            "wishlist": item in user.wishlists.all(),
             "cartForm": CartForm(max_value=item.quantity),
         }
 

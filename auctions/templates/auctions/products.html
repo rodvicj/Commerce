@@ -30,15 +30,15 @@
               </li>
               <li>
                 {% if user.is_authenticated %}
-                {% if list|in_watchlist:request.user %}
+                {% if list|in_wishlist:request.user %}
                 <form class="watchlist-form" name="watchlist" method="post"
-                  action="{% url 'auctions:remove_watchlist' %}">
+                  action="{% url 'auctions:remove_wishlist' %}">
                   <input type="hidden" name="list_id" value="{{ list.id }}" />
                   {% csrf_token %}
                   <a onclick="this.parentNode.submit();"><i class="fas fa-heart" style="color: red"></i></a>
                   {% else %}
                   <form class="watchlist-form" name="watchlist" method="post"
-                    action="{% url 'auctions:add_watchlist' %}">
+                    action="{% url 'auctions:add_wishlist' %}">
                     <input type="hidden" name="list_id" value="{{ list.id }}" />
                     {% csrf_token %}
                     <a onclick="this.parentNode.submit();"><i class="fas fa-heart"></i></a>

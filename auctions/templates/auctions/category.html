@@ -14,8 +14,7 @@
     <div class="row">
       {% for list in lists %}
       <!-- Single Product -->
-      <div class="col-md-6 col-lg-4 col-xl-3" style="cursor: pointer;" onclick='location.href="{% url '
-        auctions:view_by_category_name' list %}";'>
+      <div class="col-md-6 col-lg-4 col-xl-3" style="cursor: pointer;" onclick='location.href="{% url 'auctions:view_by_category_name' list %}";'>
         <div id="category-1" class="single-product">
           <h3 class="product-title">{{ list }}</h3>
           <div class="part-1 fal fa-image"></div>
