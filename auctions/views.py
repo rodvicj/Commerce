@@ -100,26 +100,6 @@ def new_list(request):
             item.image_url = list_form.cleaned_data["image_url"]
             item.amount = list_form.cleaned_data["amount"]
             item.user = user
-            # newList.category = newCategory
-
-            # if category_form.is_valid():
-            #     category = category_form.cleaned_data["name"]
-
-            #     if len(category) != 0:
-            #         # new_category = Category()
-            #         existing = False
-
-            #         for existing_category in Category.objects.all():
-            #             if existing_category.name.lower() == category.lower():
-            #                 list.category = existing_category
-            #                 existing = True
-
-            #         if not existing:
-            #             # new_category.name = category
-            #             new_category = Category.objects.create(name=category)
-            #             # new_category.save()
-            #             list.category = new_category
-
             item.save()
 
         return HttpResponseRedirect(reverse("auctions:product_info", args=(item.id,)))
@@ -127,7 +107,6 @@ def new_list(request):
         return render(
             request,
             "auctions/new_list.html",
-            # {"list_form": ListForm(), "category_form": CategoryForm()},
             {"list_form": ListForm()},
         )
 
@@ -144,7 +123,6 @@ def add_wishlist(request):
             item.wishlists.add(user)
             item.save()
 
-        # return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
         return HttpResponseRedirect(reverse("auctions:index"))
 
 
@@ -160,7 +138,6 @@ def remove_wishlist(request):
             item.wishlists.remove(user)
             item.save()
 
-        # return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
         return HttpResponseRedirect(reverse("auctions:index"))
 
 
@@ -170,7 +147,6 @@ def view_wishlist(request):
     wishlists = user.wishlists.all()
 
     return render(
-        # TODO: create seperate html file for view_watchlist
         request,
         "auctions/products.html",
         {
@@ -180,14 +156,11 @@ def view_wishlist(request):
 
 
 def view_category(request):
-    # categories = Category.objects.all()
     choices = Product.choices
-    # categories = Product.objects.all()
     categories = []
 
     for choice in choices:
         categories.append(choice[1])
-    # choices = categories.field.choices
 
     return render(
         request,
@@ -196,15 +169,11 @@ def view_category(request):
     )
 
 
-# categories or category_names
 def view_by_category_name(request, category_name):
     category_name = str(category_name).lower()
-    # category = Category.objects.get(name=category_name)
     lists = Product.objects.filter(category=category_name)
-    # lists = Product.objects.filter(category=category, active=True)
 
     return render(
-        # TODO: create seperate html file for view_by_category_name
         request,
         "auctions/products.html",
         {
@@ -214,20 +183,8 @@ def view_by_category_name(request, category_name):
     )
 
 
-# @login_required(login_url="auctions:login")
-# def close_listing(request, list_id):
-#     if request.method == "POST":
-#         list = Product.objects.get(pk=list_id)
-#         if list.active:
-#             list.active = False
-#             list.save()
-
-#         return HttpResponseRedirect(reverse("auctions:index"))
-
-
 @login_required(login_url="auctions:login")
 def display_products(request):
-    # products = Product.objects.exclude(active=False).all()
     products = Product.objects.filter(user=request.user).all()
     wishlists = (request.user.wishlists.all(),)
     wishlists = list(wishlists)
@@ -242,49 +199,26 @@ def display_products(request):
     )
 
 
-# @login_required(login_url="auctions:login")
-# def display_item_info(request):
-#     # products = Product.objects.exclude(active=False).all()
-#     products = Product.objects.filter(user=request.user).all()
-
-#     return render(
-#         request,
-#         "auctions/products.html",
-#         {
-#             "lists": products,
-#         },
-#     )
-#
-
-
-# @login_required(login_url="auctions:login")
 def product_info(request, list_id):
     if request.user.id:
         user = User.objects.get(id=request.user.id)
         item = Product.objects.get(pk=list_id)
 
-        context = {
-            "list": item,
-            "wishlist": item in user.wishlists.all(),
-            "cartForm": CartForm(max_value=item.quantity),
-        }
-
-        return render(request, "auctions/product_info.html", context)
-
-    else:
         return render(
             request,
             "auctions/product_info.html",
-            {"list": Product.objects.get(pk=list_id)},
+            {
+                "list": item,
+                "wishlist": item in user.wishlists.all(),
+                "cartForm": CartForm(max_value=item.quantity),
+            },
         )
 
-
-# TODO: add pagination to this web app
-# def get_context_data(self, **kwargs):
-#     context = super(CategoryPageView, self).get_context_data(**kwargs)
-#     category = self.get_object()
-#     products = Product.objects.filter(category=category)
-#     tags = Product.TagsChoices
+    return render(
+        request,
+        "auctions/product_info.html",
+        {"list": Product.objects.get(pk=list_id)},
+    )
 
 
 @login_required(login_url="auctions:login")
@@ -297,10 +231,6 @@ def add_to_cart(request):
         cart = CartForm(request.POST, max_value=max_quantity)
 
         if cart.is_valid():
-            # TODO: everytime a user add to cart something, check for all the users cart first then check if the current
-            # product the user's want to add is already one of the items in its cart
-            # else create new cart for that product
-
             # get all current user's cart
             carts = request.user.cart_products.all()
 
@@ -312,26 +242,20 @@ def add_to_cart(request):
                         cart.quantity = item.quantity
                         cart.save()
 
-                        # TODO: clear messages.info first before providing new string
+                        # clear messages.info first before providing new string
                         messages.get_messages(request).used = True
 
-                        messages.info(request, f"Maximum quantity for this item is {max_quantity}")
+                        messages.info(
+                            request,
+                            "Your cart already has the maximum quantity for this item",
+                        )
                         return HttpResponseRedirect(reverse("auctions:product_info", args=(cart.product.pk,)))
-                        # return HttpResponseRedirect(reverse("auctions:cart"))
 
                     else:
                         cart.save()
                         return HttpResponseRedirect(reverse("auctions:product_info", args=(cart.product.pk,)))
-                        # return HttpResponseRedirect(reverse("auctions:cart"))
-
-            # if already_in_cart:
-            #     # return HttpResponseRedirect(reverse("auctions:index"))
-            #     # TODO: show cart icon and add show a number that indicates how many products are in the cart
-            #     return HttpResponseRedirect(reverse("auctions:product_info", args=(product_id,)))
-            # else:
 
             item = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
-            # return HttpResponseRedirect(reverse("auctions:product_info", args=(item.product.id,)))
             return HttpResponseRedirect(reverse("auctions:cart"))
 
         else:

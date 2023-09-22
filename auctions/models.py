@@ -25,15 +25,12 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
     description = models.CharField(blank=False, max_length=512)
     image_url = models.URLField(blank=True)
-    # TODO: change this add watchlist to add to cart and change watchlist html
-    # to View cart instead;
     wishlists = models.ManyToManyField(User, blank=True, related_name="wishlists")
 
     def __str__(self):
         return f"{self.title} - {self.user}"
 
 
-# NOTE: a user should only have 1 cart but can have multiple products
 class Cart(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_products")
     product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name="cart_products")
