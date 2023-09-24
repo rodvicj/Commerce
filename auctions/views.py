@@ -85,7 +85,7 @@ def register(request):
 
 
 @login_required(login_url="auctions:login")
-def new_list(request):
+def add_product(request):
     if request.method == "POST":
         user = User.objects.get(pk=request.user.id)
         # user = request.user.id
@@ -102,11 +102,11 @@ def new_list(request):
             item.user = user
             item.save()
 
-        return HttpResponseRedirect(reverse("auctions:product_info", args=(item.id,)))
+        return HttpResponseRedirect(reverse("auctions:product", args=(item.id,)))
     else:
         return render(
             request,
-            "auctions/new_list.html",
+            "auctions/add_product.html",
             {"list_form": ListForm()},
         )
 
@@ -142,7 +142,7 @@ def remove_wishlist(request):
 
 
 @login_required(login_url="auctions:login")
-def view_wishlist(request):
+def wishlist(request):
     user = User.objects.get(id=request.user.id)
     wishlists = user.wishlists.all()
 
@@ -155,7 +155,7 @@ def view_wishlist(request):
     )
 
 
-def view_category(request):
+def category(request):
     choices = Product.choices
     categories = []
 
@@ -169,7 +169,7 @@ def view_category(request):
     )
 
 
-def view_by_category_name(request, category_name):
+def category_name(request, category_name):
     category_name = str(category_name).lower()
     lists = Product.objects.filter(category=category_name)
 
@@ -184,7 +184,7 @@ def view_by_category_name(request, category_name):
 
 
 @login_required(login_url="auctions:login")
-def display_products(request):
+def added_products(request):
     products = Product.objects.filter(user=request.user).all()
     wishlists = (request.user.wishlists.all(),)
     wishlists = list(wishlists)
@@ -199,14 +199,14 @@ def display_products(request):
     )
 
 
-def product_info(request, list_id):
+def product(request, list_id):
     if request.user.id:
         user = User.objects.get(id=request.user.id)
         item = Product.objects.get(pk=list_id)
 
         return render(
             request,
-            "auctions/product_info.html",
+            "auctions/product.html",
             {
                 "list": item,
                 "wishlist": item in user.wishlists.all(),
@@ -216,7 +216,7 @@ def product_info(request, list_id):
 
     return render(
         request,
-        "auctions/product_info.html",
+        "auctions/product.html",
         {"list": Product.objects.get(pk=list_id)},
     )
 
@@ -249,11 +249,11 @@ def add_to_cart(request):
                             request,
                             "Your cart already has the maximum quantity for this item",
                         )
-                        return HttpResponseRedirect(reverse("auctions:product_info", args=(cart.product.pk,)))
+                        return HttpResponseRedirect(reverse("auctions:product", args=(cart.product.pk,)))
 
                     else:
                         cart.save()
-                        return HttpResponseRedirect(reverse("auctions:product_info", args=(cart.product.pk,)))
+                        return HttpResponseRedirect(reverse("auctions:product", args=(cart.product.pk,)))
 
             item = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
             return HttpResponseRedirect(reverse("auctions:cart"))
@@ -261,7 +261,7 @@ def add_to_cart(request):
         else:
             messages.get_messages(request).used = True
             messages.error(request, "Something went wrong")
-            return HttpResponseRedirect(reverse("auctions:product_info", args=(list_id,)))
+            return HttpResponseRedirect(reverse("auctions:product", args=(list_id,)))
 
 
 @login_required(login_url="auctions:login")

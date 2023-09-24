@@ -7,7 +7,7 @@
       <div class="col-md-8 col-lg-6 col-xl-6">
         <div class="card" style="border-radius: 15px;">
           <div class="d-flex justify-content-between">
-            <form class="card-body pb-0" action="{% url 'auctions:new_list' %}" method="post">
+            <form class="card-body pb-0" action="{% url 'auctions:add_product' %}" method="post">
               {% csrf_token %}
               {{ list_form.as_p }}
           </div>

@@ -15,7 +15,7 @@
 <div class="app-container">
   <div class="flex-container">
     {% for list in lists %}
-    <a class="hyperlink" href="{% url 'auctions:product_info' list.id %}">
+    <a class="hyperlink" href="{% url 'auctions:product' list.id %}">
       <div class="flex-items">
         <div class="item-heading">
           <div id="title">{{ list.title }}</div>

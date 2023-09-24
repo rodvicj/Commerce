@@ -35,24 +35,25 @@
                     {% csrf_token %}
                     <a onclick="this.parentNode.submit();"><i class="fas fa-heart"></i></a>
                     {% endif %}
-
                     {% else %}
                     <a><i class="fas fa-heart"></i></a>
                     {% endif %}
                   </form>
               </li>
-              <li><a href="{% url 'auctions:product_info' list.id %}"><i class="fas fa-expand"></i></a></li>
+              <li><a href="{% url 'auctions:product' list.id %}"><i class="fas fa-expand"></i></a></li>
             </ul>
           </div>
-          <div class="part-2">
-            <h3 class="product-title">{{ list.title }}</h3>
-            <h4 class="product-old-price">{{ list.description | slice:":80" }}</h4>
-            <h4 class="product-price">${{ list.amount }}</h4>
-          </div>
+          <a style="color: black" href="{% url 'auctions:product' list.id %}">
+            <div class="part-2">
+              <h3 class="product-title">{{ list.title }}</h3>
+              <h4 class="product-old-price">{{ list.description | slice:":80" }}</h4>
+              <h4 class="product-price">${{ list.amount }}</h4>
+            </div>
+          </a>
         </div>
       </div>
       {% empty %}
-      <h3>There's no active listing</h3>
+      <h3>Empty</h3>
       {% endfor %}
     </div>
   </div>

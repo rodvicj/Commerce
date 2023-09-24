@@ -28,69 +28,44 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+            {% if not user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'auctions:view_category' %}">View Categories</a>
+              <a class="nav-link active" href="{% url 'auctions:category' %}">Category</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'auctions:register' %}">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'auctions:login' %}">Login</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'auctions:category' %}">Category</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="{% url 'auctions:cart' %}">Your Cart</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false"><strong>{{ user.username }}</strong></a>
+                aria-expanded="false"><strong>{{ user.username | upper }}</strong></a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'auctions:view_wishlist' %}">Wishlists</a></li>
-                <li><a class="dropdown-item" href="{% url 'auctions:new_list' %}">Add product</a></li>
-                <li><a class="dropdown-item" href="{% url 'auctions:cart' %}">Your Products</a></li>
-                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'auctions:wishlist' %}">Wishlists</a></li>
+                <li><a class="dropdown-item" href="{% url 'auctions:add_product' %}">Add product</a></li>
+                <li><a class="dropdown-item" href="{% url 'auctions:added_products' %}">Your Products</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
                 <li><a class="dropdown-item" href="{% url 'auctions:logout' %}">Logout</a></li>
               </ul>
             </li>
           </ul>
+          {% endif %}
         </div>
       </div>
     </nav>
   </div>
-
-  <div class="container">
-    <ul class="nav">
-      {% if user.is_authenticated %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:index' %}">All Products</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:new_list' %}">Add Product</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:view_wishlist' %}">Wishlists</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:view_category' %}">Categories</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:cart' %}">Cart</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:display_products' %}">Your products</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:logout' %}">Log Out</a>
-      </li>
-      {% else %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:index' %}">All Products</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:view_category' %}">Categories</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:login' %}">Log In</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auctions:register' %}">Register</a>
-      </li>
-      {% endif %}
-    </ul>
-  </div>
+  <hr>
   {% block body %}
   {% endblock %}
 </body>
