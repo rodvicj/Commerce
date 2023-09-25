@@ -10,6 +10,10 @@ poetry-update:
 makemigrations:
 	poetry run python manage.py makemigrations
 
+.PHONY: fixture
+fixture:
+	poetry run python manage.py loaddata intial_data.json
+
 .PHONY: install-pre-commit
 install-pre-commit:
 	poetry run pre-commit uninstall; poetry run pre-commit install

@@ -245,15 +245,15 @@ def add_to_cart(request):
                         # clear messages.info first before providing new string
                         messages.get_messages(request).used = True
 
-                        messages.info(
+                        messages.error(
                             request,
-                            "Your cart already has the maximum quantity for this item",
+                            "Your cart already has the maximum quantity",
                         )
-                        return HttpResponseRedirect(reverse("auctions:product_info", args=(cart.product.pk,)))
+                        return HttpResponseRedirect(reverse("auctions:product", args=(cart.product.pk,)))
 
                     else:
                         cart.save()
-                        return HttpResponseRedirect(reverse("auctions:product_info", args=(cart.product.pk,)))
+                        return HttpResponseRedirect(reverse("auctions:product", args=(cart.product.pk,)))
 
             item = Cart.objects.create(buyer=request.user, quantity=quantity, product=item)
             return HttpResponseRedirect(reverse("auctions:cart"))

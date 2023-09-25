@@ -16,15 +16,16 @@ class Product(models.Model):
         ("home", "Home"),
         ("others", "Others"),
     )
-    user = models.ForeignKey(User, blank=False, on_delete=models.CASCADE, related_name="lists")
-    title = models.CharField(blank=False, max_length=128)
-    date = models.DateTimeField(default=datetime.now, blank=True)
-    quantity = models.PositiveIntegerField(blank=False, default=1)
-    category = models.CharField(max_length=128, null=True, choices=choices)
-    amount = models.PositiveIntegerField(blank=False)
+
     active = models.BooleanField(default=True)
-    description = models.CharField(blank=False, max_length=512)
-    image_url = models.URLField(blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="lists")
+    title = models.CharField(max_length=128)
+    date = models.DateTimeField(default=datetime.now)
+    quantity = models.PositiveIntegerField(default=1)
+    category = models.CharField(max_length=128, choices=choices)
+    amount = models.PositiveIntegerField()
+    description = models.CharField(max_length=512)
+    image_url = models.URLField()
     wishlists = models.ManyToManyField(User, blank=True, related_name="wishlists")
 
     def __str__(self):
@@ -33,5 +34,5 @@ class Product(models.Model):
 
 class Cart(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_products")
-    product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name="cart_products")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="cart_products")
     quantity = models.PositiveIntegerField(default=1)
