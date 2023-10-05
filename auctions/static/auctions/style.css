@@ -243,7 +243,6 @@
   max-width: 600px;
 }
 
-
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
 
 body {
@@ -310,7 +309,8 @@ a:hover {
 }
 
 .section-products #category-1 .part-1 {
-  background: url(https://dummyimage.com/450x300/dee2e6/6c757d.jpg) no-repeat center;
+  background: url(https://dummyimage.com/450x300/dee2e6/6c757d.jpg) no-repeat
+    center;
   background-size: cover;
   transition: all 0.3s;
 }
