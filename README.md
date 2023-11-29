@@ -4,23 +4,15 @@
 
 ```
 $PROJECT_ROOT
-│   # auctions application files
-├── auctions
-│   # django projects files
-└── commerce
+│   # commerce backend
+├── commerce_core
+│   # commerce frontend
+└── frontend
 ```
-
-
-## Usage
-
-* install packages by running `pip: -r requirements.txt`
-* run `python manage.py runserver` to start the server
-
 
 ## TODO
 
-* add (Fashion, Toys, Electronics, Home, etc.) to category (done)
-* convert urls to API and use reactjs for frontend
+* convert to rest api
 
 ## About
 
