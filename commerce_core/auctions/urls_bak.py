@@ -34,7 +34,7 @@
 #     path("category", views.category, name="category"),
 #     path("category/<str:category_name>", views.category_name, name="category_name"),
 
-#     # car
+#     # cart
 #     path("add_to_cart", views.add_to_cart, name="add_to_cart"),
 #     path("cart", views.cart, name="cart"),
 # ]

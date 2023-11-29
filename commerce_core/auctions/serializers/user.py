@@ -8,5 +8,4 @@ class UserReadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        # fields = ('avatar', 'id', 'username')
-        fields = "__all__"
+        fields = ("id", "username")
