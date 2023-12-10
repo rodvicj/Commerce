@@ -1,8 +1,9 @@
 from rest_framework import serializers
 
+from commerce_core.authentication.serializers.user import UserReadSerializer
+
 from ..models import CartProduct, Product
 from ..models.product import ActivationStatus
-from .user import UserReadSerializer
 
 
 class ProductReadSerializer(serializers.ModelSerializer):

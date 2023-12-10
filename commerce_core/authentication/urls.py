@@ -1,24 +1,7 @@
-from rest_framework.routers import SimpleRouter
+from django.urls import path
 
-from .views.login import GroupViewSet, UserViewSet
+from .views.login import LoginView
 
-router = SimpleRouter(trailing_slash=False)
-router.register("users", UserViewSet)
-router.register("groups", GroupViewSet)
-
-urlpatterns = router.urls
-
-# from django.urls import include, path
-# from rest_framework import routers
-# from .views import UserViewSet, GroupViewSet
-
-# router = routers.DefaultRouter()
-# router.register(r'users', UserViewSet)
-# router.register(r'groups', GroupViewSet)
-
-# # Wire up our API using automatic URL routing.
-# # Additionally, we include login URLs for the browsable API.
-# urlpatterns = [
-#     path('', include(router.urls)),
-#     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-# ]
+urlpatterns = [
+    path("login", LoginView.as_view()),
+]
