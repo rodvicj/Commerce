@@ -10,7 +10,7 @@ class ActivationStatus(models.TextChoices):
     DRAFT = "DRAFT", _("Draft")
 
 
-class Product(models.Model):  # type: ignore
+class Product(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     activation_status = models.CharField(
