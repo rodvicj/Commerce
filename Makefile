@@ -22,8 +22,8 @@ lint:
 load-fixtures:
 	poetry run python -m commerce_core.manage loaddata fixtures
 
-.PHONY: makemigrations
-makemigrations:
+.PHONY: migrations
+migrations:
 	poetry run python -m commerce_core.manage makemigrations
 
 .PHONY: migrate
