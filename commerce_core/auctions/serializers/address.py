@@ -15,6 +15,6 @@ class AddressSerializer(serializers.ModelSerializer):
             "owner",
         )
 
-    def create(self, validated_data):
-        request = self.context.get("request")
-        return Address.objects.create(**validated_data, owner=request.user)
+    # def create(self, validated_data):
+    #     request = self.context.get("request")
+    #     return Address.objects.create(**validated_data, owner=request.user)
