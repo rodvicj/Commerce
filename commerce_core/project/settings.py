@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "fontawesomefree",
     "commerce_core.auctions.apps.AuctionsConfig",
     "commerce_core.authentication.apps.AuthenticationConfig",
-    "commerce_core.authentication.apps.UsersConfig",
+    "commerce_core.users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [

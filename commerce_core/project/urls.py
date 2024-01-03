@@ -5,6 +5,7 @@ from django.urls import include, path
 
 import commerce_core.auctions.urls
 import commerce_core.authentication.urls
+import commerce_core.users.urls
 
 API_PREFIX = "api/"
 
@@ -12,6 +13,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path(API_PREFIX, include(commerce_core.auctions.urls)),
     path(API_PREFIX, include(commerce_core.authentication.urls)),
+    path(API_PREFIX, include(commerce_core.users.urls)),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
