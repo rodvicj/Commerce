@@ -1,24 +1,27 @@
-from django.contrib.auth.models import Group, User
-from rest_framework import permissions, viewsets
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from ..serializers.login import GroupSerializer, UserSerializer
+from commerce_core.users.serializers.user import UserReadSerializer
 
-
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-
-    queryset = User.objects.all().order_by("-date_joined")
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+from ..serializers.login import LoginSerializer
+from ..serializers.token import TokenSerializer
 
 
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
+class LoginView(APIView):
 
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    @staticmethod
+    def post(request):
+        serializer = LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data["user"]
+
+        return Response(
+            {
+                "authentication": TokenSerializer(user).data,
+                "user": UserReadSerializer(user, context={
+                    "request": request
+                }).data,
+            },
+            status=status.HTTP_200_OK,
+        )
