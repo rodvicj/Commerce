@@ -2,9 +2,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from commerce_core.authentication.utils.login import get_user_auth_data
+from commerce_core.users.serializers.user import UserReadSerializer
 
 from ..serializers.login import LoginSerializer
+from ..serializers.token import TokenSerializer
 
 
 class LoginView(APIView):
@@ -14,4 +15,13 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
-        return Response(get_user_auth_data(user, request), status=status.HTTP_200_OK)
+
+        return Response(
+            {
+                "authentication": TokenSerializer(user).data,
+                "user": UserReadSerializer(user, context={
+                    "request": request
+                }).data,
+            },
+            status=status.HTTP_200_OK,
+        )

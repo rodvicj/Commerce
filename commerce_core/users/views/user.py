@@ -1,22 +1,57 @@
 from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets
 
-from ..serializers.user import UserSerializer
+from ..serializers.user import UserReadSerializer
+
+# from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+# from rest_framework.permissions import AllowAny, IsAuthenticated
+# from rest_framework.response import Response
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
     queryset = User.objects.all().order_by("-date_joined")
-    serializer_class = UserSerializer
+    serializer_class = UserReadSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     user = serializer.save()
 
-# class GroupViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows groups to be viewed or edited.
-#     """
-#     queryset = Group.objects.all()
-#     serializer_class = GroupSerializer
-#     permission_classes = [permissions.IsAuthenticated]
+    #     return Response(
+    #         get_user_auth_data(user, request), status=status.HTTP_201_CREATED
+    #     )
+
+    # def get_parsers(self):
+    #     if self.request.method == "POST":
+    #         self.parser_classes = [JSONParser]
+    #     elif self.request.method in ["PATCH", "PUT"]:
+    #         self.parser_classes = [MultiPartParser, FormParser]
+
+    #     return [parser() for parser in self.parser_classes]
+
+    # def get_permissions(self):
+    #     if self.request.method == "POST":
+    #         self.permission_classes = [AllowAny]
+    #     elif self.request.method in ["PATCH", "PUT"]:
+    #         self.permission_classes = [IsAuthenticated, IsSelfOrReadOnly]
+
+    #     return [permission() for permission in self.permission_classes]
+
+    # def get_serializer_class(self):
+    #     if self.request.method == "POST":
+    #         return UserWriteSerializer
+    #     elif self.request.method in ["PATCH", "PUT"]:
+    #         return UserUpdateSerializer
+
+    #     return ReadUserSerializer
+
+    # def update(self, request, *args, **kwargs):
+    #     partial = kwargs.pop("partial", False)
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance, data=request.data, partial=partial)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_update(serializer)
+    #     read_serializer = UserReadSerializer(instance, context={"request": request})
+
+    #     return Response(read_serializer.data)
