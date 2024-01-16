@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -16,7 +16,7 @@ class Product(models.Model):
     activation_status = models.CharField(
         choices=ActivationStatus.choices, max_length=6, default=ActivationStatus.DRAFT
     )
-    seller = models.ForeignKey(User, on_delete=models.CASCADE)
+    seller = models.ForeignKey("users.User", on_delete=models.CASCADE)
     description = models.TextField()
     image = models.ImageField(upload_to="images/", null=True)
     name = models.CharField(max_length=200)

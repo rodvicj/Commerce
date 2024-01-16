@@ -11,7 +11,7 @@ class UserReadSerializer(serializers.ModelSerializer):
         fields = ["username", "email"]
 
 
-# class WriteUserSerializer(serializers.ModelSerializer):
+# class UserWriteSerializer(serializers.ModelSerializer):
 
 #     class Meta:
 #         Model = User

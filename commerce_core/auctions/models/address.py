@@ -1,10 +1,10 @@
-from django.contrib.auth.models import User, models
+from django.contrib.auth.models import models
 
 
 class Address(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
-    owner = models.ForeignKey(User, related_name="addresses", on_delete=models.CASCADE)
+    owner = models.ForeignKey("users.User", related_name="addresses", on_delete=models.CASCADE)
     address_1 = models.CharField(max_length=255)
     address_2 = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=50)

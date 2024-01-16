@@ -1,17 +1,19 @@
-from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets
+# from django.contrib.auth.models import User
+# from django.contrib.auth import get_user_model
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
+from ..models import User
 from ..serializers.user import UserReadSerializer
 
 # from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
-# from rest_framework.permissions import AllowAny, IsAuthenticated
 # from rest_framework.response import Response
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by("-date_joined")
     serializer_class = UserReadSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     # def create(self, request, *args, **kwargs):
     #     serializer = self.get_serializer(data=request.data)
