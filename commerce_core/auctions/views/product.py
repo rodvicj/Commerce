@@ -1,17 +1,20 @@
+from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework import status, viewsets
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import IsAuthenticated
+# from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from ..models import Product
 from ..models.product import ActivationStatus
 from ..serializers.product import ProductReadSerializer, ProductWriteSerializer
 
+User = get_user_model()
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Product.objects.none()
 
     def create(self, request, *args, **kwargs):
@@ -23,7 +26,8 @@ class ProductViewSet(viewsets.ModelViewSet):
         return Response(read_serializer.data, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
-        user = self.request.user
+        # user = self.request.user
+        user = User.objects.get(pk=1)
 
         if self.action in ["create", "partial_update", "update"]:
             return Product.objects.filter(seller=user)

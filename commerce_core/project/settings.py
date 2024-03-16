@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "commerce_core.auctions.apps.AuctionsConfig",
     "commerce_core.authentication.apps.AuthenticationConfig",
     "commerce_core.users.apps.UsersConfig",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "commerce_core.project.urls"
@@ -143,3 +145,5 @@ MEDIA_ROOT = BASE_DIR / "media"  # type: ignore # noqa: F821
 
 # STATIC_URL = '/static/'
 # STATIC_ROOT = BASE_DIR / 'staticfiles'  # type: ignore # noqa: F821
+
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
