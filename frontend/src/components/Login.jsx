@@ -1,12 +1,25 @@
 import { useState } from "react";
-import getCookie from "../getCookie";
+import { getCookie } from "../getCookie";
+import { createGlobalState } from "react-hooks-global-state";
 
-const Login = () => {
+const { useGlobalState, getGlobalState, setGlobalState } = createGlobalState({
+  jwtToken: "",
+});
+
+export const getJWTToken = () => getGlobalState("jwtToken");
+const setJWTToken = (value) => setGlobalState("jwtToken", value);
+export const useJWTToken = () => useGlobalState("jwtToken");
+
+// TODO: create LoginPage, and authentication component;
+export const Login = () => {
+  const [JWT, setJWT] = useJWTToken();
   const [state, setState] = useState({
     username: "",
     password: "",
-    token: "",
+    // token: "",
   });
+
+  // const [user, setUser] = useState(null);
 
   const fetchUser = async () => {
     const csrftoken = getCookie("csrftoken");
@@ -25,30 +38,48 @@ const Login = () => {
         }),
       });
       const result = await response.json();
-      setState({ ...state, token: result.authentication.access_token });
-      console.log("result:",result);
+      // setJWTToken(result.authentication);
+      setJWT(result.authentication);
+      console.log("result complete:", result);
+      // return result.authentication.access_token;
     } catch (error) {
+      Promise.reject(error);
       console.log("Error:", error);
     }
   };
 
+  const showToken = () => {
+    const token = getJWTToken();
+    console.log("access token", token?.access_token);
+    console.log("refresh token", token?.refresh_token);
+  };
+
   return (
-    <div>
-      <input
-        type="text"
-        onChange={(event) =>
-          setState({ ...state, username: event.target.value })
-        }
-      />
-      <input
-        type="text"
-        onChange={(event) =>
-          setState({ ...state, password: event.target.value })
-        }
-      />
-      <button onClick={fetchUser}>click me</button>
+    <div style={{ padding: "10px" }}>
+      {JWT ? <p>{JWT.access_token}</p> : <p>Login first</p>}
+      <div>
+        {/* username:{" "} */}
+        <input
+          placeholder="username"
+          label="username"
+          type="text"
+          onChange={(event) =>
+            setState({ ...state, username: event.target.value })
+          }
+        />
+      </div>
+      <div>
+        {/* password:{" "} */}
+        <input
+          placeholder="password"
+          type="text"
+          onChange={(event) =>
+            setState({ ...state, password: event.target.value })
+          }
+        />
+      </div>
+      <button onClick={fetchUser}>Login</button>
+      <button onClick={showToken}>showToken</button>
     </div>
   );
 };
-
-export default Login;

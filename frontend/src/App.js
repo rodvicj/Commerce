@@ -1,9 +1,11 @@
-import Hello from "./components/Hello";
+import { Login } from "./components/Login";
+import { Products } from "./components/Products";
 
 function App() {
   return (
     <div className="App">
-      <Hello />
+      <Login />
+      <Products />
     </div>
   );
 }
