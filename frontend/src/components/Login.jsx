@@ -13,6 +13,7 @@ export const useJWTToken = () => useGlobalState("jwtToken");
 // TODO: create LoginPage, and authentication component;
 export const Login = () => {
   const [JWT, setJWT] = useJWTToken();
+  const [user, setUser] = useState(null);
   const [state, setState] = useState({
     username: "",
     password: "",
@@ -22,15 +23,13 @@ export const Login = () => {
   // const [user, setUser] = useState(null);
 
   const fetchUser = async () => {
-    const csrftoken = getCookie("csrftoken");
-
     try {
       const response = await fetch("http://127.0.0.1:8000/api/login", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "X-CSRFToken": csrftoken,
+          "X-CSRFToken": getCookie("csrftoken"),
         },
         body: JSON.stringify({
           username: state.username,
@@ -40,6 +39,7 @@ export const Login = () => {
       const result = await response.json();
       // setJWTToken(result.authentication);
       setJWT(result.authentication);
+      setUser(result.user);
       console.log("result complete:", result);
       // return result.authentication.access_token;
     } catch (error) {
@@ -48,38 +48,44 @@ export const Login = () => {
     }
   };
 
-  const showToken = () => {
-    const token = getJWTToken();
-    console.log("access token", token?.access_token);
-    console.log("refresh token", token?.refresh_token);
+  const logout = () => {
+    setJWT(undefined);
+    setUser(undefined);
+    setState({ username: "", password: "" });
   };
 
   return (
     <div style={{ padding: "10px" }}>
-      {JWT ? <p>{JWT.access_token}</p> : <p>Login first</p>}
-      <div>
-        {/* username:{" "} */}
-        <input
-          placeholder="username"
-          label="username"
-          type="text"
-          onChange={(event) =>
-            setState({ ...state, username: event.target.value })
-          }
-        />
-      </div>
-      <div>
-        {/* password:{" "} */}
-        <input
-          placeholder="password"
-          type="text"
-          onChange={(event) =>
-            setState({ ...state, password: event.target.value })
-          }
-        />
-      </div>
-      <button onClick={fetchUser}>Login</button>
-      <button onClick={showToken}>showToken</button>
+      {JWT ? (
+        <>
+          {" "}
+          <p>{user.username}</p> <button onClick={logout}>Logout</button>{" "}
+        </>
+      ) : (
+        <>
+          <div>
+            <input
+              placeholder="username"
+              label="username"
+              type="text"
+              onChange={(event) =>
+                setState({ ...state, username: event.target.value })
+              }
+            />
+          </div>
+          <div>
+            {/* password:{" "} */}
+            <input
+              placeholder="password"
+              type="text"
+              onChange={(event) =>
+                setState({ ...state, password: event.target.value })
+              }
+            />
+          </div>
+          <button onClick={fetchUser}>Login</button>
+        </>
+      )}
     </div>
   );
 };
