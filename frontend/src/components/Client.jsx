@@ -1,18 +1,20 @@
 import { useCallback } from "react";
 import { createGlobalState } from "react-hooks-global-state";
-// import axios from "axios";
 import { getCookie } from "../getCookie";
+// import axios from "axios";
 
 // const { useGlobalState, getGlobalState, setGlobalState } = createGlobalState({
 const { useGlobalState } = createGlobalState({
   jwtToken: "",
+  user: "",
 });
-// const getJWTToken = () => getGlobalState("jwtToken");
-// const setJWTToken = value => setGlobalState("jwtToken", value);
+
 const useJWTToken = () => useGlobalState("jwtToken");
+const useUser = () => useGlobalState("user");
 
 export function useClient() {
   const [JWT, setJWT] = useJWTToken();
+  const [user, setUser] = useUser();
 
   const login = useCallback(async (name, password) => {
     try {
@@ -21,7 +23,7 @@ export function useClient() {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "X-CSRFToken": getCookie(),
+          "X-CSRFToken": getCookie("csrftoken"),
         },
         body: JSON.stringify({
           username: name,
@@ -31,6 +33,7 @@ export function useClient() {
       const result = await response.json();
       // setJWTToken(result.authentication);
       setJWT(result.authentication);
+      setUser(result.user);
       console.log("result complete:", result);
       // return result.authentication.access_token;
     } catch (error) {
@@ -41,6 +44,7 @@ export function useClient() {
 
   const logout = useCallback(() => {
     setJWT("");
+    setUser({});
   }, []);
 
   // const getTodos = useCallback(
@@ -53,10 +57,8 @@ export function useClient() {
 
   return {
     JWT,
-    // getTodos,
+    user,
     login,
     logout,
   };
 }
-
-// export default client;

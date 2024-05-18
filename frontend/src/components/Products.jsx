@@ -35,8 +35,8 @@ export const Products = ({ access_token }) => {
     <div>
       {products && (
         <>
-          {products.map((item, index) => (
-            <div key={index}>
+          {products.map((item) => (
+            <div key={item.id}>
               <p>{item.name}</p>
               <img src={item.image} alt="item.name" />
             </div>

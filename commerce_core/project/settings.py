@@ -146,4 +146,4 @@ MEDIA_ROOT = BASE_DIR / "media"  # type: ignore # noqa: F821
 # STATIC_URL = '/static/'
 # STATIC_ROOT = BASE_DIR / 'staticfiles'  # type: ignore # noqa: F821
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]

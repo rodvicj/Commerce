@@ -1,13 +1,13 @@
-import { useJWTToken, Login } from "./components/Login";
-import { Products } from "./components/Products";
+import { useClient } from "./components/Client";
+import Authenticated from "./components/Authenticated";
+import UnAuthenticated from "./components/UnAuthenticated";
 
 function App() {
-  const [JWT, setJWT] = useJWTToken();
+  const { JWT } = useClient();
 
   return (
-    <div className="App">
-      <Login />
-      {JWT && <Products access_token={JWT.access_token} />}
+    <div className="App" style={{ padding: "10px" }}>
+      {JWT ? <Authenticated /> : <UnAuthenticated />}
     </div>
   );
 }
