@@ -32,18 +32,29 @@ export const Products = ({ access_token }) => {
   }, [access_token]);
 
   return (
-    <div>
+    <div className="products__container">
       {products && (
         <>
           {products.map((item) => (
-            <div key={item.id}>
-              <p>{item.name}</p>
-              <img src={item.image} alt="item.name" />
+            <div className="products__container-wrapper" key={item.id}>
+              <h1 className="products__item-title">{item.name}</h1>
+              <img
+                className="products__image"
+                src={item.image}
+                alt={item.name}
+              />
+              <h2 className="products__description">{item.description}</h2>
             </div>
           ))}
         </>
       )}
-      <h1>Render Count: {count.current}</h1>
+      <h1 style={{ color: "red", padding: "1.5em" }}>
+        Render Count: {count.current}
+      </h1>
     </div>
   );
 };
+
+export default Products;
+
+// TODO: style products__container as flex as default

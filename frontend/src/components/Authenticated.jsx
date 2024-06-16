@@ -1,13 +1,13 @@
 import { useClient } from "./Client";
+import Header from "./Header";
 import { Products } from "./Products";
 
 function Authenticated() {
-  const { JWT, logout, user } = useClient();
+  const { JWT, user } = useClient();
 
   return (
     <>
-      <p>{user?.username}</p>
-      <button onClick={() => logout()}>Logout</button>
+      <Header />
       <Products access_token={JWT.access_token} />
     </>
   );
