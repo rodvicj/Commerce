@@ -35,24 +35,26 @@ export const Products = ({ access_token }) => {
 
   return (
     <div className="products__container">
+      <h1 style={{ color: "red", "padding-bottom": "0.25em" }}>
+        Render Count: {count.current}
+      </h1>
       {products && (
         <>
           {products.map((item) => (
             <div className="products__container-wrapper" key={item.id}>
               <h1 className="products__item-title">{item.name}</h1>
-              <img
-                className="products__image"
-                src={item.image}
-                alt={item.name}
-              />
-              <h2 className="products__description">{item.description}</h2>
+              <div className="products__item-body">
+                <img
+                  className="products__image"
+                  src={item.image}
+                  alt={item.name}
+                />
+                <h2 className="products__description">{item.description}</h2>
+              </div>
             </div>
           ))}
         </>
       )}
-      <h1 style={{ color: "red", padding: "1.5em" }}>
-        Render Count: {count.current}
-      </h1>
     </div>
   );
 };

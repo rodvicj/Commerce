@@ -1,6 +1,7 @@
 /* <Header /> */
 
 .header__container {
+  margin: 0 auto;
   padding: 1em;
   display: flex;
   justify-content: space-between;
@@ -33,4 +34,10 @@
 .header__nav-items:hover,
 .header__nav-items:focus {
   color: darkblue;
+}
+
+@media (min-width: 1366px) {
+  .header__container {
+    max-width: 50%;
+  }
 }
