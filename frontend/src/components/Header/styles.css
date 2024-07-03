@@ -1,0 +1,36 @@
+/* <Header /> */
+
+.header__container {
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__username {
+  font-size: 2rem;
+  color: red;
+  font-weight: 900;
+  margin: 0;
+}
+
+.header__logout-btn {
+  width: 70px;
+  height: 25px;
+}
+
+.header__nav-container {
+  display: flex;
+  list-style-type: none;
+}
+
+.header__nav-items {
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding-right: 2em;
+}
+
+.header__nav-items:hover,
+.header__nav-items:focus {
+  color: darkblue;
+}
