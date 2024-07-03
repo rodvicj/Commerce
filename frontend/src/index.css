@@ -96,39 +96,3 @@ input {
 .login__button:focus {
   color: #000;
 }
-
-/* <Product /> */
-
-.products__container {
-  margin: 0;
-  width: 100%;
-}
-
-.products__container-wrapper {
-  border: 2px solid darkgray;
-}
-
-.products__item-title {
-  text-align: center;
-  padding: 1em;
-}
-
-.products__image {
-  display: block;
-  width: 100%;
-}
-
-.products__description {
-  padding: 1em 0.25em;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.6;
-  letter-spacing: 1px;
-}
-
-
-@media(min-width: 1024px) {
-  .products__container {
-    max-width: 80%;
-  }
-}
